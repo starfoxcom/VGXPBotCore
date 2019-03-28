@@ -24,8 +24,7 @@ namespace VGXPBotCore.Modules
     public static EmbedBuilder SimpleEmbed(
       Color _color,
       string _author,
-      string _description,
-      string _iconUrl)
+      string _description)
     {
 
       //Create & set embed object
@@ -36,7 +35,7 @@ namespace VGXPBotCore.Modules
 
       //Set embed content
       embed
-        .WithAuthor(_author, _iconUrl)
+        .WithAuthor(_author, Program._client.CurrentUser.GetAvatarUrl())
         .WithDescription(_description);
 
       return embed;
@@ -82,6 +81,10 @@ namespace VGXPBotCore.Modules
           "region text NOT NULL, " +
           "actualXP integer NOT NULL, " +
           "lastXP integer NOT NULL" +
+          ");" +
+          "CREATE TABLE participants (" +
+          "id integer NOT NULL, " +
+          "payment integer NOT NULL" +
           ");", sQLiteConnection);
 
         //Execute the query
@@ -90,6 +93,29 @@ namespace VGXPBotCore.Modules
         //Close the connection
         sQLiteConnection.Close();
       }
+    }
+
+    public static void ExecuteQuery(
+      string _serverId,
+      string _query)
+    {
+
+      //Create and set the database connection
+      SQLiteConnection sQLiteConnection =
+        new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;");
+
+      //Open the connection
+      sQLiteConnection.Open();
+
+      //Set query
+      SQLiteCommand sQLiteCommand =
+        new SQLiteCommand(_query, sQLiteConnection);
+
+      //Execute the query
+      sQLiteCommand.ExecuteNonQuery();
+
+      //Close the connection
+      sQLiteConnection.Close();
     }
 
     public static void DeleteDB(string _serverId)

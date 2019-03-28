@@ -15,7 +15,7 @@ namespace VGXPBotCore
   class Program
   {
     //Define discord socket client
-    private DiscordSocketClient _client;
+    public static DiscordSocketClient _client;
 
     //Define command service
     private CommandService _commands;
@@ -47,6 +47,7 @@ namespace VGXPBotCore
       //Set Client Joined Guild
       _client.JoinedGuild += JoinedGuild;
 
+      //Set Client Left Guild
       _client.LeftGuild += LeftGuild;
 
       //Set game
@@ -121,8 +122,7 @@ namespace VGXPBotCore
         var embed = Modules.CoreModule.SimpleEmbed(
           Color.Red,
           "Error",
-          result.ErrorReason,
-          context.Client.CurrentUser.GetAvatarUrl());
+          result.ErrorReason);
 
         await context.Channel.SendMessageAsync("", false, embed.Build());
       }
