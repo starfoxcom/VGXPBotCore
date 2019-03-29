@@ -35,7 +35,7 @@ namespace VGXPBotCore.Modules
 
         //Set query
         using (SQLiteCommand dbCommand =
-          new SQLiteCommand("SELECT role, notifications, notificationChannelName FROM settings LIMIT 1;", dbConnection))
+          new SQLiteCommand("SELECT role, notifications, notificationChannel FROM settings LIMIT 1;", dbConnection))
         {
 
           //Create and set the database reader from the command query
@@ -45,7 +45,11 @@ namespace VGXPBotCore.Modules
             //Read settings info
             dbDataReader.Read();
 
+            //Create and set socket role
             SocketRole role = Context.Guild.Roles.FirstOrDefault(x => x.Name == $"{dbDataReader["role"]}");
+
+            //Create and set socket text channel
+            SocketTextChannel channel = Context.Guild.Channels.FirstOrDefault(x => x.Name == $"{dbDataReader["notificationChannel"]}") as SocketTextChannel;
 
             //Create and set embed object
             var embed = new EmbedBuilder();
@@ -56,13 +60,29 @@ namespace VGXPBotCore.Modules
               .WithAuthor("VGXPBot Settings", Context.Client.CurrentUser.GetAvatarUrl())
               .AddField("Guild Member role", role == null ? $"{dbDataReader["role"]}" : role.Mention, true)
               .AddField("Notifications", $"{dbDataReader["notifications"]}", true)
-              .AddField("Notification's channel", $"{dbDataReader["notificationChannelName"]}", true);
+              .AddField("Notification's channel", channel == null ? $"{dbDataReader["notificationChannel"]}" : channel.Mention, true);
 
             //Reply embed
             await ReplyAsync("", false, embed.Build());
           }
         }
       }
+    }
+
+    [Command("createdb")]
+    public async Task createdb()
+    {
+
+      CoreModule.CreateDB($"{Context.Guild.Id}.db");
+      await ReplyAsync("Database created");
+    }
+
+    [Command("deletedb")]
+    public async Task deletedb()
+    {
+
+      CoreModule.DeleteDB($"{Context.Guild.Id}.db");
+      await ReplyAsync("Database deleted");
     }
   }
 }

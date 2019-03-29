@@ -74,8 +74,7 @@ namespace VGXPBotCore.Modules
           "CREATE TABLE settings (" +
           "role text NOT NULL, " +
           "notifications text NOT NULL, " +
-          "notificationChannelId integer NOT NULL, " +
-          "notificationChannelName text NOT NULL" +
+          "notificationChannel text NOT NULL" +
           ");" +
           "CREATE TABLE users (" +
           "id integer NOT NULL, " +
@@ -89,8 +88,8 @@ namespace VGXPBotCore.Modules
           "payment integer NOT NULL" +
           ");" +
           "INSERT INTO settings " +
-          "(role, notifications, notificationChannelId, notificationChannelName) values" +
-          "('not set', 'Off', 0, 'not set');", dbConnection))
+          "(role, notifications, notificationChannel) values" +
+          "('not set', 'Off', 'not set');", dbConnection))
           {
 
             //Execute the query
