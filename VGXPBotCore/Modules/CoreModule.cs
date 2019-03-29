@@ -99,6 +99,7 @@ namespace VGXPBotCore.Modules
       }
     }
 
+    //Execute query
     public static void ExecuteQuery(
       string _serverId,
       string _query)
@@ -123,12 +124,85 @@ namespace VGXPBotCore.Modules
       }
     }
 
+    //Delete server Database
     public static void DeleteDB(
       string _serverId)
     {
       if(File.Exists($"Databases/{_serverId}"))
       {
         File.Delete($"Databases/{_serverId}");
+      }
+    }
+
+    //Send notification
+    public static void SendNotification(
+      string _serverId,
+      string _author,
+      string _description,
+      SocketCommandContext _context)
+    {
+
+      //Create and set the database connection
+      using (SQLiteConnection dbConnection =
+        new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;"))
+      {
+
+        //Open the connection
+        dbConnection.Open();
+
+        //Set query
+        using (SQLiteCommand dbCommand =
+          new SQLiteCommand("SELECT notifications, notificationChannel FROM settings LIMIT 1;", dbConnection))
+        {
+
+          //Create and set the database reader from the command query
+          using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader())
+          {
+
+            //Read settings info
+            dbDataReader.Read();
+
+            //Create and set socket role
+            string notificationFlag = $"{dbDataReader["notifications"]}";
+
+            //On notifications On
+            if (notificationFlag == "On")
+            {
+
+              //Create and set socket text channel
+              SocketTextChannel channel = _context.Guild.Channels.FirstOrDefault(x => x.Name == $"{dbDataReader["notificationChannel"]}") as SocketTextChannel;
+
+              //On server has text channel
+              if(channel != null)
+              {
+
+                //Create and set embed object
+                var embed = SimpleEmbed(
+                  Color.Gold,
+                  _author,
+                  _description);
+
+                //Send message to channel
+                _context.Guild.GetTextChannel(channel.Id).SendMessageAsync("", false, embed.Build());
+              }
+
+              //On no text channel found
+              else
+              {
+
+                //Create and set embed object
+                var embed = SimpleEmbed(
+                  Color.Gold,
+                  "Channel not found",
+                  "Notifications are On, but the **channel** to send them is not found, " +
+                  "please **set** the **notification channel** with **`~setchannel` command**.");
+
+                //Send message to channel
+                _context.Channel.SendMessageAsync("", false, embed.Build());
+              }
+            }
+          }
+        }
       }
     }
   }
