@@ -64,22 +64,5 @@ namespace VGXPBotCore.Modules
         }
       }
     }
-
-    [Command("createdb")]
-    public async Task createdb()
-    {
-
-      CoreModule.CreateDB($"{Context.Guild.Id}.db");
-      await ReplyAsync("Database created");
-    }
-
-    [Command("deletedb")]
-    public async Task deletedb()
-    {
-
-      CoreModule.DeleteDB($"{Context.Guild.Id}.db");
-
-      await ReplyAsync("Database deleted");
-    }
   }
 }

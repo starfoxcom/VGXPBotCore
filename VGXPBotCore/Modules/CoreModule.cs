@@ -90,7 +90,7 @@ namespace VGXPBotCore.Modules
           ");" +
           "INSERT INTO settings " +
           "(role, notifications, notificationChannelId, notificationChannelName) values" +
-          "('not set', 'No', 0, 'not set');", dbConnection))
+          "('not set', 'Off', 0, 'not set');", dbConnection))
           {
 
             //Execute the query

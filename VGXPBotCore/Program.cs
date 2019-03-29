@@ -164,7 +164,7 @@ namespace VGXPBotCore
     {
 
       //Delete database file
-      File.Delete($"Databases/{server.Id}.db");
+      Modules.CoreModule.DeleteDB($"{server.Id}.db");
 
       //Return task as completed
       return Task.CompletedTask;
