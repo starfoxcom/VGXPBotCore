@@ -59,21 +59,23 @@ namespace VGXPBotCore.Modules
         }
 
         //Create Database file
-        using (var stream = File.Create("Databases/" + _serverId)) { }
+        using (File.Create("Databases/" + _serverId)) { }
 
         //Create and set the database connection
-        SQLiteConnection sQLiteConnection =
-          new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;");
+        using (SQLiteConnection dbConnection =
+          new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;"))
+        { 
 
-        //Open the connection
-        sQLiteConnection.Open();
+          //Open the connection
+          dbConnection.Open();
 
-        //Create all the tables needed for the database
-        SQLiteCommand sQLiteCommand = new SQLiteCommand(
+          //Create all the tables needed for the database
+          using (SQLiteCommand dbCommand = new SQLiteCommand(
           "CREATE TABLE settings (" +
           "role text NOT NULL, " +
-          "notifications integer NOT NULL, " +
-          "notificationChannelId integer NOT NULL" +
+          "notifications text NOT NULL, " +
+          "notificationChannelId integer NOT NULL, " +
+          "notificationChannelName text NOT NULL" +
           ");" +
           "CREATE TABLE users (" +
           "id integer NOT NULL, " +
@@ -85,13 +87,16 @@ namespace VGXPBotCore.Modules
           "CREATE TABLE participants (" +
           "id integer NOT NULL, " +
           "payment integer NOT NULL" +
-          ");", sQLiteConnection);
+          ");" +
+          "INSERT INTO settings " +
+          "(role, notifications, notificationChannelId, notificationChannelName) values" +
+          "('not set', 'No', 0, 'not set');", dbConnection))
+          {
 
-        //Execute the query
-        sQLiteCommand.ExecuteNonQuery();
-
-        //Close the connection
-        sQLiteConnection.Close();
+            //Execute the query
+            dbCommand.ExecuteNonQuery();
+          }
+        }
       }
     }
 
@@ -101,28 +106,31 @@ namespace VGXPBotCore.Modules
     {
 
       //Create and set the database connection
-      SQLiteConnection sQLiteConnection =
-        new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;");
+      using (SQLiteConnection dbConnection =
+        new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;"))
+      {
 
-      //Open the connection
-      sQLiteConnection.Open();
+        //Open the connection
+        dbConnection.Open();
 
-      //Set query
-      SQLiteCommand sQLiteCommand =
-        new SQLiteCommand(_query, sQLiteConnection);
+        //Set query
+        using (SQLiteCommand dbCommand =
+          new SQLiteCommand(_query, dbConnection))
+        {
 
-      //Execute the query
-      sQLiteCommand.ExecuteNonQuery();
-
-      //Close the connection
-      sQLiteConnection.Close();
+          //Execute the query
+          dbCommand.ExecuteNonQuery();
+        }
+      }
     }
 
-    public static void DeleteDB(string _serverId)
+    public static void DeleteDB(
+      string _serverId)
     {
-
-      //Delete the specified file
-      File.Delete("Databases/" + _serverId);
+      if(File.Exists($"Databases/{_serverId}"))
+      {
+        File.Delete($"Databases/{_serverId}");
+      }
     }
   }
 }

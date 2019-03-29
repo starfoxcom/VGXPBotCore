@@ -163,9 +163,9 @@ namespace VGXPBotCore
     private Task LeftGuild(SocketGuild server)
     {
 
-      //Delete the server database
-      Modules.CoreModule.DeleteDB($"{server.Id}.db");
-      
+      //Delete database file
+      File.Delete($"Databases/{server.Id}.db");
+
       //Return task as completed
       return Task.CompletedTask;
     }
