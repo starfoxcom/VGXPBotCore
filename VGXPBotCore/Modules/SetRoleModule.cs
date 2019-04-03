@@ -39,6 +39,12 @@ namespace VGXPBotCore.Modules
 
         //Reply embed
         await ReplyAsync("", false, embed.Build());
+
+        CoreModule.SendNotification(
+          $"{Context.Guild.Id}.db",
+          "Member role changed",
+          $"{Context.User.Mention} **changed** the Guild Member **role** to {role.Mention}.",
+          Context);
       }
     }
   }
