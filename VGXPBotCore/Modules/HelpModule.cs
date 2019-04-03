@@ -30,7 +30,7 @@ namespace VGXPBotCore.Modules
       var builder = CoreModule.SimpleEmbed(
         Color.Orange,
         "Bot Commands",
-        "These are the commands you can use");
+        "These are the commands **you can use**");
 
       //For each module on command service
       foreach (var module in Program._commands.Modules)
@@ -51,11 +51,11 @@ namespace VGXPBotCore.Modules
           {
 
             //Add description for each command
-            description += $"{prefix}{cmd.Aliases.First()} {string.Join(", ", cmd.Parameters.Select(p => p.Name))}\n";
+            description += $"**`{prefix}`**{cmd.Aliases.First()} {string.Join(", ", cmd.Parameters.Select(p => p.Name))}\n";
           }
         }
 
-        //On descrition is not null
+        //On desciption is not null
         if (!string.IsNullOrWhiteSpace(description))
         {
 

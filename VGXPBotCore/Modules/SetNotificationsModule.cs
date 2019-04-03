@@ -22,36 +22,11 @@ namespace VGXPBotCore.Modules
     [Command("setnotifications")]
     [Summary("`Sets` the notifications of the bot.")]
     [Alias("sn")]
-    public async Task SetNotificationsAsync(string response)
+    public async Task SetNotificationsAsync(bool boolean)
     {
 
-      //On response 0
-      if (response == "0")
-      {
-
-        CoreModule.SendNotification(
-          $"{Context.Guild.Id}.db",
-          "Notification settings changed",
-          $"{Context.User.Mention} **changed** the Notification settings to **Off**.",
-          Context);
-
-        //Execute query
-        CoreModule.ExecuteQuery($"{Context.Guild.Id}.db",
-          $"update settings set notifications = 'Off';");
-
-        //Set embed content
-        var embed = CoreModule.SimpleEmbed(
-        Color.Green,
-        "Set notifications completed",
-        $"The **notifications** have been set **Off**.");
-
-        //Reply embed
-        await ReplyAsync("", false, embed.Build());
-
-      }
-
-      //On response 1
-      else if (response == "1")
+      //On true
+      if (boolean)
       {
 
         //Execute query
@@ -67,6 +42,7 @@ namespace VGXPBotCore.Modules
         //Reply embed
         await ReplyAsync("", false, embed.Build());
 
+        //Send notification
         CoreModule.SendNotification(
           $"{Context.Guild.Id}.db",
           "Notification settings changed",
@@ -74,20 +50,26 @@ namespace VGXPBotCore.Modules
           Context);
       }
 
-      //On response not match the options provided
+      //On false
       else
       {
 
+        //Send notification
+        CoreModule.SendNotification(
+          $"{Context.Guild.Id}.db",
+          "Notification settings changed",
+          $"{Context.User.Mention} **changed** the Notification settings to **Off**.",
+          Context);
+
+        //Execute query
+        CoreModule.ExecuteQuery($"{Context.Guild.Id}.db",
+          $"update settings set notifications = 'Off';");
+
         //Set embed content
         var embed = CoreModule.SimpleEmbed(
-          Color.Red,
-          "Error",
-          "The response didn't match any of the options. The options are:\n" +
-          "```cs\n" +
-          "[0] Turn Off bot notifications.\n" +
-          "[1] Turn On bot notifications.\n" +
-          "```\n" +
-          "**`Set notifications aborted`**.");
+        Color.Green,
+        "Set notifications completed",
+        $"The **notifications** have been set **Off**.");
 
         //Reply embed
         await ReplyAsync("", false, embed.Build());
