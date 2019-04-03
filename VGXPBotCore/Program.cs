@@ -18,10 +18,10 @@ namespace VGXPBotCore
     public static DiscordSocketClient _client;
 
     //Define command service
-    private CommandService _commands;
+    public static CommandService _commands;
 
     //Define service provider
-    private IServiceProvider _services;
+    public static IServiceProvider _services;
 
     //Bot token
     string token = GetToken("token.txt");
@@ -106,12 +106,16 @@ namespace VGXPBotCore
       //Create a number to track where the prefix ends and the command begins
       int argPos = 0;
 
-      //Determine if the message is a command with prefix
-      if (!(message.HasCharPrefix('~', ref argPos) ||
-        message.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
-
       //Create a Command Context
       var context = new SocketCommandContext(_client, message);
+
+      //Get the prefix from the guild settings
+      string prefix = Modules.CoreModule.getPrefix($"{context.Guild.Id}.db");
+
+      //Determine if the message is a command with prefix
+      if (!(message.HasStringPrefix(prefix, ref argPos) ||
+        message.HasCharPrefix('~', ref argPos) ||
+        message.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
 
       //Execute the command. (result does not indicate a return value, 
       //rather an object stating if the command executed successfully)
