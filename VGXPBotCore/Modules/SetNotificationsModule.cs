@@ -43,7 +43,7 @@ namespace VGXPBotCore.Modules
         var embed = CoreModule.SimpleEmbed(
         Color.Green,
         "Set notifications completed",
-        $"The **notifications** has been set **Off**.");
+        $"The **notifications** have been set **Off**.");
 
         //Reply embed
         await ReplyAsync("", false, embed.Build());
@@ -62,7 +62,7 @@ namespace VGXPBotCore.Modules
         var embed = CoreModule.SimpleEmbed(
         Color.Green,
         "Set notifications completed",
-        $"The **notifications** has been set **On**.");
+        $"The **notifications** have been set **On**.");
 
         //Reply embed
         await ReplyAsync("", false, embed.Build());

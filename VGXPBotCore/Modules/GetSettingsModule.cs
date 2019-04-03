@@ -35,7 +35,7 @@ namespace VGXPBotCore.Modules
 
         //Set query
         using (SQLiteCommand dbCommand =
-          new SQLiteCommand("SELECT role, notifications, notificationChannel FROM settings LIMIT 1;", dbConnection))
+          new SQLiteCommand("SELECT prefix, role, notifications, notificationChannel FROM settings LIMIT 1;", dbConnection))
         {
 
           //Create and set the database reader from the command query
@@ -58,8 +58,9 @@ namespace VGXPBotCore.Modules
             embed
               .WithColor(Color.Purple)
               .WithAuthor("VGXPBot Settings", Context.Client.CurrentUser.GetAvatarUrl())
+              .AddField("Prefix", $"**`{dbDataReader["prefix"]}`**", false)
               .AddField("Guild Member role", role == null ? $"{dbDataReader["role"]}" : role.Mention, true)
-              .AddField("Notifications", $"{dbDataReader["notifications"]}", true)
+              .AddField("Notifications", $"**`{dbDataReader["notifications"]}`**", true)
               .AddField("Notification's channel", channel == null ? $"{dbDataReader["notificationChannel"]}" : channel.Mention, true);
 
             //Reply embed
@@ -69,6 +70,8 @@ namespace VGXPBotCore.Modules
       }
     }
 
+    [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
+    [RequireOwner(Group = "Permission")]
     [Command("createdb")]
     public async Task createdb()
     {
@@ -77,6 +80,8 @@ namespace VGXPBotCore.Modules
       await ReplyAsync("Database created");
     }
 
+    [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
+    [RequireOwner(Group = "Permission")]
     [Command("deletedb")]
     public async Task deletedb()
     {
