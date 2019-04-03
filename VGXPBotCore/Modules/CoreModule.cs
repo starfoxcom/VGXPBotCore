@@ -72,6 +72,7 @@ namespace VGXPBotCore.Modules
           //Create all the tables needed for the database
           using (SQLiteCommand dbCommand = new SQLiteCommand(
           "CREATE TABLE settings (" +
+          "prefix text NOT NULL," +
           "role text NOT NULL, " +
           "notifications text NOT NULL, " +
           "notificationChannel text NOT NULL" +
@@ -88,8 +89,8 @@ namespace VGXPBotCore.Modules
           "payment integer NOT NULL" +
           ");" +
           "INSERT INTO settings " +
-          "(role, notifications, notificationChannel) values" +
-          "('not set', 'Off', 'not set');", dbConnection))
+          "(prefix, role, notifications, notificationChannel) values" +
+          "('~', 'not set', 'Off', 'not set');", dbConnection))
           {
 
             //Execute the query
@@ -120,6 +121,36 @@ namespace VGXPBotCore.Modules
 
           //Execute the query
           dbCommand.ExecuteNonQuery();
+        }
+      }
+    }
+
+    public static string getPrefix(string _serverId)
+    {
+
+      //Create and set the database connection
+      using (SQLiteConnection dbConnection =
+        new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;"))
+      {
+
+        //Open the connection
+        dbConnection.Open();
+
+        //Set query
+        using (SQLiteCommand dbCommand =
+          new SQLiteCommand("Select prefix FROM settings LIMIT 1", dbConnection))
+        {
+
+          //Create and set the database reader from the command query
+          using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader())
+          {
+
+            //Read settings info
+            dbDataReader.Read();
+
+            //Return prefix
+            return $"{dbDataReader["prefix"]}";
+          }
         }
       }
     }
