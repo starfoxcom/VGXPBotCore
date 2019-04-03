@@ -29,6 +29,12 @@ namespace VGXPBotCore.Modules
       if (response == "0")
       {
 
+        CoreModule.SendNotification(
+          $"{Context.Guild.Id}.db",
+          "Notification settings changed",
+          $"{Context.User.Mention} **changed** the Notification settings to **Off**.",
+          Context);
+
         //Execute query
         CoreModule.ExecuteQuery($"{Context.Guild.Id}.db",
           $"update settings set notifications = 'Off';");
@@ -60,6 +66,12 @@ namespace VGXPBotCore.Modules
 
         //Reply embed
         await ReplyAsync("", false, embed.Build());
+
+        CoreModule.SendNotification(
+          $"{Context.Guild.Id}.db",
+          "Notification settings changed",
+          $"{Context.User.Mention} **changed** the Notification settings to **On**.",
+          Context);
       }
 
       //On response not match the options provided

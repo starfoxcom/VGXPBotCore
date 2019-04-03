@@ -41,6 +41,12 @@ namespace VGXPBotCore.Modules
 
         //Reply embed
         await ReplyAsync("", false, embed.Build());
+
+        CoreModule.SendNotification(
+          $"{Context.Guild.Id}.db",
+          "Notification's channel changed",
+          $"{Context.User.Mention} **changed** the Notification's channel to {channel.Mention}.",
+          Context);
       }
     }
   }
