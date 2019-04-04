@@ -30,7 +30,7 @@ namespace VGXPBotCore.Modules
       {
 
         //Execute query
-        CoreModule.ExecuteQuery($"{Context.Guild.Id}.db",
+        CoreModule.ExecuteQuery(Context.Guild.Id,
           $"update settings set notificationChannel = '{channel.Name}';");
 
         //Set embed content
@@ -44,10 +44,9 @@ namespace VGXPBotCore.Modules
 
         //Send notification
         CoreModule.SendNotification(
-          $"{Context.Guild.Id}.db",
+          Context.Guild.Id,
           "Notification's channel changed",
-          $"{Context.User.Mention} **changed** the Notification's channel to {channel.Mention}.",
-          Context);
+          $"{Context.User.Mention} **changed** the Notification's channel to {channel.Mention}.");
       }
     }
   }

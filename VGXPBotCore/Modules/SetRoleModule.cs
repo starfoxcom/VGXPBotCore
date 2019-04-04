@@ -28,7 +28,7 @@ namespace VGXPBotCore.Modules
       {
 
         //Execute query
-        CoreModule.ExecuteQuery($"{Context.Guild.Id}.db",
+        CoreModule.ExecuteQuery(Context.Guild.Id,
           $"update settings set role = '{role.Name}';");
 
         //Set embed content
@@ -42,10 +42,9 @@ namespace VGXPBotCore.Modules
 
         //Send notification
         CoreModule.SendNotification(
-          $"{Context.Guild.Id}.db",
+          Context.Guild.Id,
           "Member role changed",
-          $"{Context.User.Mention} **changed** the Guild Member **role** to {role.Mention}.",
-          Context);
+          $"{Context.User.Mention} **changed** the Guild Member **role** to {role.Mention}.");
       }
     }
   }

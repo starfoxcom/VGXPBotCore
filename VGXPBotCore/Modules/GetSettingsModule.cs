@@ -75,7 +75,7 @@ namespace VGXPBotCore.Modules
     public async Task createdb()
     {
 
-      CoreModule.CreateDB($"{Context.Guild.Id}.db");
+      CoreModule.CreateDB(Context.Guild.Id);
       await ReplyAsync("Database created");
     }
 
@@ -84,7 +84,7 @@ namespace VGXPBotCore.Modules
     public async Task deletedb()
     {
 
-      CoreModule.DeleteDB($"{Context.Guild.Id}.db");
+      CoreModule.DeleteDB(Context.Guild.Id);
       await ReplyAsync("Database deleted");
     }
   }

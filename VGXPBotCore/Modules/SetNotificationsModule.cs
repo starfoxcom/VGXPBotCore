@@ -30,7 +30,7 @@ namespace VGXPBotCore.Modules
       {
 
         //Execute query
-        CoreModule.ExecuteQuery($"{Context.Guild.Id}.db",
+        CoreModule.ExecuteQuery(Context.Guild.Id,
           $"update settings set notifications = 'On';");
 
         //Set embed content
@@ -44,10 +44,9 @@ namespace VGXPBotCore.Modules
 
         //Send notification
         CoreModule.SendNotification(
-          $"{Context.Guild.Id}.db",
+          Context.Guild.Id,
           "Notification settings changed",
-          $"{Context.User.Mention} **changed** the Notification settings to **On**.",
-          Context);
+          $"{Context.User.Mention} **changed** the Notification settings to **On**.");
       }
 
       //On false
@@ -56,13 +55,12 @@ namespace VGXPBotCore.Modules
 
         //Send notification
         CoreModule.SendNotification(
-          $"{Context.Guild.Id}.db",
+          Context.Guild.Id,
           "Notification settings changed",
-          $"{Context.User.Mention} **changed** the Notification settings to **Off**.",
-          Context);
+          $"{Context.User.Mention} **changed** the Notification settings to **Off**.");
 
         //Execute query
-        CoreModule.ExecuteQuery($"{Context.Guild.Id}.db",
+        CoreModule.ExecuteQuery(Context.Guild.Id,
           $"update settings set notifications = 'Off';");
 
         //Set embed content

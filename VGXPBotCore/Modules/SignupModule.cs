@@ -26,14 +26,14 @@ namespace VGXPBotCore.Modules
       SocketGuildUser user = Context.User as SocketGuildUser;
 
       //Create and set role
-      SocketRole role = CoreModule.GetRole($"{Context.Guild.Id}.db", Context);
+      SocketRole role = CoreModule.GetRole(Context.Guild.Id, Context);
 
       //On socket guild user contains guild member role
       if (user.Roles.Contains(role))
       {
 
         //On user not on database
-        if (!CoreModule.UserDBExists($"{Context.Guild.Id}.db", user.Id))
+        if (!CoreModule.UserDBExists(Context.Guild.Id, user.Id))
         {
 
           //On username exists
@@ -41,7 +41,7 @@ namespace VGXPBotCore.Modules
           {
 
             //Add user to database
-            CoreModule.ExecuteQuery($"{Context.Guild.Id}.db",
+            CoreModule.ExecuteQuery(Context.Guild.Id,
               "INSERT INTO users (" +
                 "id," +
                 "name," +
@@ -60,10 +60,16 @@ namespace VGXPBotCore.Modules
             var embed = CoreModule.SimpleEmbed(
             Color.Green,
             "Sign up completed",
-            $"The **`sign up`** of the user {user.Mention} is completed");
+            $"Your **sign up** is **completed**.");
 
             //Reply embed
             await ReplyAsync("", false, embed.Build());
+
+            //Send notification
+            CoreModule.SendNotification(
+              Context.Guild.Id,
+              "User registered",
+              $"{user.Mention} **registered** to the database.");
           }
 
           //On username don't exist
@@ -141,13 +147,15 @@ namespace VGXPBotCore.Modules
     public async Task SignupAsync(SocketGuildUser user, string username, string region)
     {
 
-      SocketRole role = CoreModule.GetRole($"{Context.Guild.Id}.db", Context);
+      //Create and set role
+      SocketRole role = CoreModule.GetRole(Context.Guild.Id, Context);
+      
       //On socket guild user contains guild member role
       if (user.Roles.Contains(role))
       {
 
         //On user not on database
-        if (!CoreModule.UserDBExists($"{Context.Guild.Id}.db", user.Id))
+        if (!CoreModule.UserDBExists(Context.Guild.Id, user.Id))
         {
 
           //On username exists
@@ -155,7 +163,7 @@ namespace VGXPBotCore.Modules
           {
 
             //Add user to database
-            CoreModule.ExecuteQuery($"{Context.Guild.Id}.db",
+            CoreModule.ExecuteQuery(Context.Guild.Id,
               "INSERT INTO users (" +
                 "id," +
                 "name," +
@@ -174,10 +182,16 @@ namespace VGXPBotCore.Modules
             var embed = CoreModule.SimpleEmbed(
             Color.Green,
             "Sign up completed",
-            $"The **`sign up`** of the user {user.Mention} is completed");
+            $"The **sign up** of the user {user.Mention} is **completed**.");
 
             //Reply embed
             await ReplyAsync("", false, embed.Build());
+
+            //Send notification
+            CoreModule.SendNotification(
+              Context.Guild.Id,
+              "User registered",
+              $"{Context.User.Mention} **registered** the user {user.Mention} to the database.");
           }
 
           //On username don't exist
@@ -189,7 +203,7 @@ namespace VGXPBotCore.Modules
             Color.Red,
             "Vainglory player not found",
             "The Vainglory username that you typed wasn't found, " +
-              "please check the **`spell`** or the **`region`** and try again. **`Sign up aborted.`**");
+              "please check the **spell** or the **region** and try again. **`Sign up aborted.`**");
 
             //Reply embed
             await ReplyAsync("", false, embed.Build());
@@ -204,7 +218,7 @@ namespace VGXPBotCore.Modules
           var embed = CoreModule.SimpleEmbed(
             Color.Red,
             "User found",
-            "User already on the database, **`sign up aborted`**.");
+            "User **already** on the database, **`sign up aborted`**.");
 
           //Reply embed
           await ReplyAsync("", false, embed.Build());
@@ -237,7 +251,7 @@ namespace VGXPBotCore.Modules
           embed = CoreModule.SimpleEmbed(
             Color.Red,
             "Role not set",
-            "The **role** to use the commands has **not been set**, please use `~setrole` " +
+            "The **role** to use the commands has **not been set**, please use **`~setrole`** " +
             "to set the role, **`sign up aborted`**.");
         }
 

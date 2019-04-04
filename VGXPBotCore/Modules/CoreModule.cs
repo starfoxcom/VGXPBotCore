@@ -43,13 +43,13 @@ namespace VGXPBotCore.Modules
 
     //User exists on database
     public static bool UserDBExists(
-      string _serverId,
+      ulong _serverId,
       ulong _userId)
     {
 
       //Create and set the database connection
       using (SQLiteConnection dbConnection =
-        new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;"))
+        new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;"))
       {
 
         //Open the connection
@@ -178,11 +178,11 @@ namespace VGXPBotCore.Modules
 
     //Create Server Database
     public static void CreateDB(
-      string _serverId)
+      ulong _serverId)
     {
 
       //In case that the database file don't exist
-      if (!File.Exists("Databases/"+_serverId))
+      if (!File.Exists($"Databases/{_serverId}.db"))
       {
 
         //In case that the database folder don't exist
@@ -194,11 +194,11 @@ namespace VGXPBotCore.Modules
         }
 
         //Create Database file
-        using (File.Create("Databases/" + _serverId)) { }
+        using (File.Create($"Databases/{_serverId}.db")) { }
 
         //Create and set the database connection
         using (SQLiteConnection dbConnection =
-          new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;"))
+          new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;"))
         { 
 
           //Open the connection
@@ -237,13 +237,13 @@ namespace VGXPBotCore.Modules
 
     //Execute query
     public static void ExecuteQuery(
-      string _serverId,
+      ulong _serverId,
       string _query)
     {
 
       //Create and set the database connection
       using (SQLiteConnection dbConnection =
-        new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;"))
+        new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;"))
       {
 
         //Open the connection
@@ -262,12 +262,12 @@ namespace VGXPBotCore.Modules
 
     //Get guild prefix
     public static string GetPrefix(
-      string _serverId)
+      ulong _serverId)
     {
 
       //Create and set the database connection
       using (SQLiteConnection dbConnection =
-        new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;"))
+        new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;"))
       {
 
         //Open the connection
@@ -294,13 +294,13 @@ namespace VGXPBotCore.Modules
 
     //Get guild member role
     public static SocketRole GetRole(
-      string _serverId,
+      ulong _serverId,
       SocketCommandContext _context)
     {
 
       //Create and set the database connection
       using (SQLiteConnection dbConnection =
-        new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;"))
+        new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;"))
       {
 
         //Open the connection
@@ -327,25 +327,24 @@ namespace VGXPBotCore.Modules
 
     //Delete server Database
     public static void DeleteDB(
-      string _serverId)
+      ulong _serverId)
     {
-      if(File.Exists($"Databases/{_serverId}"))
+      if(File.Exists($"Databases/{_serverId}.db"))
       {
-        File.Delete($"Databases/{_serverId}");
+        File.Delete($"Databases/{_serverId}.db");
       }
     }
 
     //Send notification
     public static void SendNotification(
-      string _serverId,
+      ulong _serverId,
       string _author,
-      string _description,
-      SocketCommandContext _context)
+      string _description)
     {
 
       //Create and set the database connection
       using (SQLiteConnection dbConnection =
-        new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;"))
+        new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;"))
       {
 
         //Open the connection
@@ -371,7 +370,10 @@ namespace VGXPBotCore.Modules
             {
 
               //Create and set socket text channel
-              SocketTextChannel channel = _context.Guild.Channels.FirstOrDefault(x => x.Name == $"{dbDataReader["notificationChannel"]}") as SocketTextChannel;
+              SocketTextChannel channel = 
+                Program._client.GetGuild(
+                  _serverId).Channels.FirstOrDefault(
+                  x => x.Name == $"{dbDataReader["notificationChannel"]}") as SocketTextChannel;
 
               //On server has text channel
               if(channel != null)
@@ -384,7 +386,8 @@ namespace VGXPBotCore.Modules
                   _description);
 
                 //Send message to channel
-                _context.Guild.GetTextChannel(channel.Id).SendMessageAsync("", false, embed.Build());
+                Program._client.GetGuild(
+                  _serverId).GetTextChannel(channel.Id).SendMessageAsync("", false, embed.Build());
               }
 
               //On no text channel found
@@ -395,11 +398,12 @@ namespace VGXPBotCore.Modules
                 var embed = SimpleEmbed(
                   Color.Gold,
                   "Channel not found",
-                  "Notifications are On, but the **channel** to send them is not found, " +
-                  "please **set** the **notification channel** with **`~setchannel` command**.");
+                  "Notifications are On, but the **channel** to send them is not found or is not set, " +
+                  "please **set** the **notification channel **with** `~setchannel` command**.");
 
                 //Send message to channel
-                _context.Channel.SendMessageAsync("", false, embed.Build());
+                Program._client.GetGuild(
+                  _serverId).DefaultChannel.SendMessageAsync("", false, embed.Build());
               }
             }
           }
