@@ -70,7 +70,6 @@ namespace VGXPBotCore.Modules
       }
     }
 
-    [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
     [RequireOwner(Group = "Permission")]
     [Command("createdb")]
     public async Task createdb()
@@ -80,7 +79,6 @@ namespace VGXPBotCore.Modules
       await ReplyAsync("Database created");
     }
 
-    [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
     [RequireOwner(Group = "Permission")]
     [Command("deletedb")]
     public async Task deletedb()
