@@ -50,6 +50,9 @@ namespace VGXPBotCore
       //Set Client Left Guild
       _client.LeftGuild += LeftGuild;
 
+      //Set user left
+      _client.UserLeft += UserLeft;
+
       //Set game
       await _client.SetGameAsync("~help for commands");
       //await _client.SetGameAsync("On development");
@@ -66,6 +69,7 @@ namespace VGXPBotCore
       //Block this task until program is closed
       await Task.Delay(-1);
     }
+
 
     public static string GetToken(string _file)
     {
@@ -109,11 +113,21 @@ namespace VGXPBotCore
       //Create a Command Context
       var context = new SocketCommandContext(_client, message);
 
-      //Get the prefix from the guild settings
-      string prefix = Modules.CoreModule.GetPrefix($"{context.Guild.Id}.db");
+      //Create prefix string
+      string prefix = "";
+
+      //On database file exists
+      if (File.Exists($"Databases/{context.Guild.Id}.db"))
+      {
+
+        //Get the prefix from the guild settings
+        prefix = Modules.CoreModule.GetPrefix(context.Guild.Id);
+      }
 
       //Determine if the message is a command with prefix
-      if (!(message.HasStringPrefix(prefix, ref argPos) ||
+      if (!(File.Exists($"Databases/{context.Guild.Id}.db") ? 
+        message.HasStringPrefix(prefix, ref argPos) : 
+        message.HasCharPrefix('~', ref argPos) ||
         message.HasCharPrefix('~', ref argPos) ||
         message.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
 
@@ -131,6 +145,7 @@ namespace VGXPBotCore
         await context.Channel.SendMessageAsync("", false, embed.Build());
       }
     }
+
     private IServiceProvider ConfigureServices()
     {
       return new ServiceCollection()
@@ -157,7 +172,7 @@ namespace VGXPBotCore
     {
 
       //Create the server database
-      Modules.CoreModule.CreateDB($"{server.Id}.db");
+      Modules.CoreModule.CreateDB(server.Id);
 
       //Return task as completed
       return Task.CompletedTask;
@@ -168,9 +183,30 @@ namespace VGXPBotCore
     {
 
       //Delete database file
-      Modules.CoreModule.DeleteDB($"{server.Id}.db");
+      Modules.CoreModule.DeleteDB(server.Id);
 
       //Return task as completed
+      return Task.CompletedTask;
+    }
+
+    //User left Guild method
+    private Task UserLeft(SocketGuildUser user)
+    {
+
+      if(Modules.CoreModule.UserDBExists(user.Guild.Id, user.Id))
+      {
+
+        //Execute query
+        Modules.CoreModule.ExecuteQuery(user.Guild.Id,
+          $"DELETE FROM users WHERE id = {user.Id};");
+
+        //Send notification
+        Modules.CoreModule.SendNotification(
+          user.Guild.Id,
+          "User deleted",
+          $"{user.Mention} **left** the server, {user.Mention} has been **deleted** from the database.");
+      }
+
       return Task.CompletedTask;
     }
   }

@@ -26,7 +26,7 @@ namespace VGXPBotCore.Modules
     {
 
       //Execute query
-      CoreModule.ExecuteQuery($"{Context.Guild.Id}.db",
+      CoreModule.ExecuteQuery(Context.Guild.Id,
         $"update settings set prefix = '{prefix}';");
 
       //Set embed content
@@ -40,10 +40,9 @@ namespace VGXPBotCore.Modules
 
       //Send notification
       CoreModule.SendNotification(
-        $"{Context.Guild.Id}.db",
+        Context.Guild.Id,
         "prefix changed",
-        $"{Context.User.Mention} **changed** the prefix to **{prefix}**.",
-        Context);
+        $"{Context.User.Mention} **changed** the prefix to **{prefix}**.");
     }
   }
 }
