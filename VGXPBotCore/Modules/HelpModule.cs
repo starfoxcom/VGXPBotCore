@@ -24,7 +24,7 @@ namespace VGXPBotCore.Modules
     {
 
       //Get prefix from guild settings
-      string prefix = CoreModule.getPrefix($"{Context.Guild.Id}.db");
+      string prefix = CoreModule.GetPrefix($"{Context.Guild.Id}.db");
 
       //Create and set embed object
       var builder = CoreModule.SimpleEmbed(
@@ -55,7 +55,7 @@ namespace VGXPBotCore.Modules
           }
         }
 
-        //On desciption is not null
+        //On description is not null
         if (!string.IsNullOrWhiteSpace(description))
         {
 
@@ -105,7 +105,7 @@ namespace VGXPBotCore.Modules
       }
 
       //Get prefix from guild settings
-      string prefix = CoreModule.getPrefix($"{Context.Guild.Id}.db");
+      string prefix = CoreModule.GetPrefix($"{Context.Guild.Id}.db");
 
       //Create and set embed object
       var builder = CoreModule.SimpleEmbed(

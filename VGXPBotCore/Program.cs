@@ -21,7 +21,7 @@ namespace VGXPBotCore
     public static CommandService _commands;
 
     //Define service provider
-    public static IServiceProvider _services;
+    private IServiceProvider _services;
 
     //Bot token
     string token = GetToken("token.txt");
@@ -110,7 +110,7 @@ namespace VGXPBotCore
       var context = new SocketCommandContext(_client, message);
 
       //Get the prefix from the guild settings
-      string prefix = Modules.CoreModule.getPrefix($"{context.Guild.Id}.db");
+      string prefix = Modules.CoreModule.GetPrefix($"{context.Guild.Id}.db");
 
       //Determine if the message is a command with prefix
       if (!(message.HasStringPrefix(prefix, ref argPos) ||

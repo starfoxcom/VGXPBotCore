@@ -41,6 +41,141 @@ namespace VGXPBotCore.Modules
       return embed;
     }
 
+    //User exists on database
+    public static bool UserDBExists(
+      string _serverId,
+      ulong _userId)
+    {
+
+      //Create and set the database connection
+      using (SQLiteConnection dbConnection =
+        new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;"))
+      {
+
+        //Open the connection
+        dbConnection.Open();
+
+        //Set query
+        using (SQLiteCommand dbCommand =
+          new SQLiteCommand($"SELECT id FROM users WHERE id = {_userId};", dbConnection))
+        {
+
+          //Create and set the database reader from the command query
+          using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader())
+          {
+
+            //Read users
+            dbDataReader.Read();
+
+            //On user found
+            if(dbDataReader.StepCount > 0)
+            {
+
+              return true;
+            }
+
+            return false;
+          }
+        }
+      }
+    }
+
+    //Username exists on Vainglory
+    public static bool UserVGExists(
+      string _username,
+      string _region)
+    {
+
+      //Create & set found checker
+      bool found = false;
+
+      //Create & set socket URL
+      string sURL = $"https://api.dc01.gamelockerapp.com/shards/{_region}/players?" +
+        $"filter[playerNames]={_username}";
+
+      //Create & set web request
+      var WRGetURL = (HttpWebRequest)WebRequest.Create(sURL);
+
+      //Set method
+      WRGetURL.Method = "Get";
+
+      //Set header with Authorization API Key
+      WRGetURL.Headers.Add("Authorization", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9." +
+        "eyJqdGkiOiJkZTMxMDM0MC1mOGI3LTAxMzQtYjdlYS0wMjQyYWMxMTAwMGIiLCJpc3MiOiJnY" +
+        "W1lbG9ja2VyIiwiaWF0IjoxNDkxMDE2NzM3LCJwdWIiOiJzZW1jIiwidGl0bGUiOiJ2YWluZ2" +
+        "xvcnkiLCJhcHAiOiJkZTJhZmRjMC1mOGI3LTAxMzQtYjdlOC0wMjQyYWMxMTAwMGIiLCJzY29" +
+        "wZSI6ImNvbW11bml0eSIsImxpbWl0IjoxMH0.QxjHDvJEN-lO0KV9PyJZVprL4Zt6cV3awKjxZx3exzc");
+
+      //Set accept
+      WRGetURL.Accept = "application/vnd.api+json";
+
+      HttpWebResponse response = null;
+
+      try
+      {
+
+        //try get web response
+        response = (HttpWebResponse)WRGetURL.GetResponse();
+      }
+
+      //In case that try fails
+      catch (WebException e)
+      {
+
+        //On a protocol error
+        if (e.Status == WebExceptionStatus.ProtocolError)
+        {
+
+          //Set the response
+          response = (HttpWebResponse)e.Response;
+
+          //Write the error code on console
+          Console.Write("Errorcode: {0}\n", (int)response.StatusCode);
+        }
+
+        //Otherwise write the error on console
+        else
+        {
+
+          Console.Write("Error: {0}\n", e.Status);
+        }
+      }
+      finally
+      {
+        if (response != null)
+        {
+
+          //On Vainglory username not found
+          if (response.StatusDescription == "Not Found" ||
+            response.StatusDescription == "Internal Server Error")
+          {
+            found = false;
+          }
+
+          //Otherwise Vainglory username found
+          else
+          {
+            found = true;
+          }
+
+          //Close the connection
+          response.Close();
+        }
+      }
+
+      //On not found
+      if (found != true)
+      {
+        return false;
+      }
+
+      //Otherwise on found
+      else
+      {
+        return true;
+      }
+    }
+
     //Create Server Database
     public static void CreateDB(
       string _serverId)
@@ -125,7 +260,9 @@ namespace VGXPBotCore.Modules
       }
     }
 
-    public static string getPrefix(string _serverId)
+    //Get guild prefix
+    public static string GetPrefix(
+      string _serverId)
     {
 
       //Create and set the database connection
@@ -150,6 +287,39 @@ namespace VGXPBotCore.Modules
 
             //Return prefix
             return $"{dbDataReader["prefix"]}";
+          }
+        }
+      }
+    }
+
+    //Get guild member role
+    public static SocketRole GetRole(
+      string _serverId,
+      SocketCommandContext _context)
+    {
+
+      //Create and set the database connection
+      using (SQLiteConnection dbConnection =
+        new SQLiteConnection($"Data Source = Databases/{_serverId}; Version = 3;"))
+      {
+
+        //Open the connection
+        dbConnection.Open();
+
+        //Set query
+        using (SQLiteCommand dbCommand =
+          new SQLiteCommand("SELECT role FROM settings LIMIT 1;", dbConnection))
+        {
+
+          //Create and set the database reader from the command query
+          using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader())
+          {
+
+            //Read role
+            dbDataReader.Read();
+
+            //Return role
+            return _context.Guild.Roles.FirstOrDefault(x => x.Name == $"{dbDataReader["role"]}");
           }
         }
       }
