@@ -128,7 +128,6 @@ namespace VGXPBotCore
       if (!(File.Exists($"Databases/{context.Guild.Id}.db") ? 
         message.HasStringPrefix(prefix, ref argPos) : 
         message.HasCharPrefix('~', ref argPos) ||
-        message.HasCharPrefix('~', ref argPos) ||
         message.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
 
       //Execute the command. (result does not indicate a return value, 
