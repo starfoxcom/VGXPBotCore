@@ -144,7 +144,7 @@ namespace VGXPBotCore.Modules
     [Command("signup")]
     [Summary("`registers` the specified user to the bot database.")]
     [Alias("snup")]
-    public async Task SignupAsync(SocketGuildUser user, string username, string region)
+    public async Task SignupAsync(string username, string region, [Remainder]SocketGuildUser user)
     {
 
       //Create and set role
