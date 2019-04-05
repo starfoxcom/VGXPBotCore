@@ -139,7 +139,7 @@ namespace VGXPBotCore.Modules
     [Command("stats")]
     [Summary("`Shows` the stats of the specified user.")]
     [Alias("s")]
-    public async Task GetStatsAsync(SocketGuildUser user)
+    public async Task GetStatsAsync([Remainder]SocketGuildUser user)
     {
 
       //Create and set role

@@ -14,15 +14,15 @@ using System.Data.SQLite;
 
 namespace VGXPBotCore.Modules
 {
-  public class DeleteModule : InteractiveBase
+  public class UpdateStatsModule : InteractiveBase
   {
 
     [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
     [RequireOwner(Group = "Permission")]
-    [Command("delete")]
-    [Summary("`Delete` the specified user from the bot database.")]
-    [Alias("d")]
-    public async Task DeleteAsync([Remainder]SocketGuildUser user)
+    [Command("updatestats", RunMode = RunMode.Async)]
+    [Summary("`Updates` the actual XP of the user on the database.")]
+    [Alias("us")]
+    public async Task UpdateStatsAsync(int xpfame, [Remainder]SocketGuildUser user)
     {
 
       //On user on database
@@ -31,13 +31,13 @@ namespace VGXPBotCore.Modules
 
         //Execute query
         CoreModule.ExecuteQuery(Context.Guild.Id,
-          $"DELETE FROM users WHERE id = {user.Id};");
+          $"UPDATE users SET actualXP = {xpfame} where id = {user.Id};");
 
         //Set embed object
         var embed = CoreModule.SimpleEmbed(
         Color.Green,
-        "Delete completed",
-        $"The **delete** of the user {user.Mention} is **completed**.");
+        "Update completed",
+        $"The **update** of the user {user.Mention} is **completed**.");
 
         //Reply embed
         await ReplyAsync("", false, embed.Build());
@@ -45,8 +45,8 @@ namespace VGXPBotCore.Modules
         //Send notification
         CoreModule.SendNotification(
           Context.Guild.Id,
-          "User deleted",
-          $"{Context.User.Mention} **deleted** the user {user.Mention} from the database.");
+          "User stats updated",
+          $"{Context.User.Mention} **updated** the user {user.Mention} database stats.");
       }
 
       //On user not on database
@@ -57,7 +57,7 @@ namespace VGXPBotCore.Modules
         var embed = CoreModule.SimpleEmbed(
         Color.Red,
         "User not found",
-        $"{user.Mention} doesn't exist on the database, **`delete aborted`**.");
+        $"{user.Mention} doesn't exist on the database, **`update aborted`**.");
 
         //Reply embed
         await ReplyAsync("", false, embed.Build());
