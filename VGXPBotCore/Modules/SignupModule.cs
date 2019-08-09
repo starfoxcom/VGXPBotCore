@@ -37,7 +37,7 @@ namespace VGXPBotCore.Modules
         {
 
           //On username exists
-          if (CoreModule.UserVGExists(username, region))
+          //if (CoreModule.UserVGExists(username, region)) - Not working since VGAPI is not longer available
           {
 
             //Add user to database
@@ -72,20 +72,20 @@ namespace VGXPBotCore.Modules
               $"{user.Mention} **registered** to the database.");
           }
 
-          //On username don't exist
-          else
-          {
+          //On username don't exist - Not working since VGAPI is not longer available
+          //else
+          //{
 
-            //Create and set embed content
-            var embed = CoreModule.SimpleEmbed(
-            Color.Red,
-            "Vainglory player not found",
-            "The Vainglory username that you typed wasn't found, " +
-              "please check the **`spell`** or the **`region`** and try again. **`Sign up aborted.`**");
+          //  //Create and set embed content
+          //  var embed = CoreModule.SimpleEmbed(
+          //  Color.Red,
+          //  "Vainglory player not found",
+          //  "The Vainglory username that you typed wasn't found, " +
+          //    "please check the **`spell`** or the **`region`** and try again. **`Sign up aborted.`**");
 
-            //Reply embed
-            await ReplyAsync("", false, embed.Build());
-          }
+          //  //Reply embed
+          //  await ReplyAsync("", false, embed.Build());
+          //}
         }
 
         //On user in database
@@ -159,7 +159,7 @@ namespace VGXPBotCore.Modules
         {
 
           //On username exists
-          if (CoreModule.UserVGExists(username, region))
+          //if (CoreModule.UserVGExists(username, region)) - Not working since VGAPI is not longer available
           {
 
             //Add user to database
@@ -194,20 +194,20 @@ namespace VGXPBotCore.Modules
               $"{Context.User.Mention} **registered** the user {user.Mention} to the database.");
           }
 
-          //On username don't exist
-          else
-          {
+          //On username don't exist - Not working since VGAPI is not longer available
+          //else
+          //{
 
-            //Create and set embed content
-            var embed = CoreModule.SimpleEmbed(
-            Color.Red,
-            "Vainglory player not found",
-            "The Vainglory username that you typed wasn't found, " +
-              "please check the **spell** or the **region** and try again. **`Sign up aborted.`**");
+          //  //Create and set embed content
+          //  var embed = CoreModule.SimpleEmbed(
+          //  Color.Red,
+          //  "Vainglory player not found",
+          //  "The Vainglory username that you typed wasn't found, " +
+          //    "please check the **spell** or the **region** and try again. **`Sign up aborted.`**");
 
-            //Reply embed
-            await ReplyAsync("", false, embed.Build());
-          }
+          //  //Reply embed
+          //  await ReplyAsync("", false, embed.Build());
+          //}
         }
 
         //On user in database
