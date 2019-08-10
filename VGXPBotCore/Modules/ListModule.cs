@@ -91,6 +91,7 @@ namespace VGXPBotCore.Modules
                 else
                 {
 
+                  //Set embed content
                   embed2.AddField($"{dbDataReader["name"]}", $"{socketUser.Mention}", true);
                 }
 
@@ -108,10 +109,13 @@ namespace VGXPBotCore.Modules
         var embed3 = CoreModule.SimpleEmbed(
           Color.Gold,
           $"Users not found",
-          $"A total of `{usersToDelete.Count}` users where deleted from the database, since they're not on the server.");
+          $"These users where deleted from the database, since they're not on the server");
 
         for (int i = 0; i < usersToDelete.Count; ++i)
         {
+
+          //Set embed content
+          embed3.AddField($"{i + 1}", $"<@{usersToDelete[i]}>", true);
 
           //Execute query
           CoreModule.ExecuteQuery(Context.Guild.Id,
