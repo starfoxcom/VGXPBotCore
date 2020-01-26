@@ -385,6 +385,9 @@ namespace VGXPBotCore.Modules
                   _author,
                   _description);
 
+                //Set the current time stamp
+                embed.WithCurrentTimestamp();
+
                 //Send message to channel
                 Program._client.GetGuild(
                   _serverId).GetTextChannel(channel.Id).SendMessageAsync("", false, embed.Build());
