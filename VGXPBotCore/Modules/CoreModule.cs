@@ -219,10 +219,11 @@ namespace VGXPBotCore.Modules
           "actualXP integer NOT NULL, " +
           "lastXP integer NOT NULL" +
           ");" +
-          "CREATE TABLE participants (" +
-          "id integer NOT NULL, " +
-          "payment integer NOT NULL" +
-          ");" +
+          //WIP - participants table purpose is not well defined yet
+          //"CREATE TABLE participants (" +
+          //"id integer NOT NULL, " +
+          //"payment integer NOT NULL" +
+          //");" +
           "INSERT INTO settings " +
           "(prefix, role, notifications, notificationChannel) values" +
           "('~', 'not set', 'Off', 'not set');", dbConnection))
