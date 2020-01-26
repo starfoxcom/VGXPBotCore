@@ -17,7 +17,7 @@ namespace VGXPBotCore.Modules
 
     [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
     [RequireOwner(Group = "Permission")]
-    [Command("setrole", RunMode = RunMode.Async)]
+    [Command("setrole")]
     [Summary("`Sets` the member role for the bot.")]
     [Alias("sr")]
     public async Task SetRoleDatabaseAsync(SocketRole role)

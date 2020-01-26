@@ -19,7 +19,7 @@ namespace VGXPBotCore.Modules
 
     [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
     [RequireOwner(Group = "Permission")]
-    [Command("updatestats", RunMode = RunMode.Async)]
+    [Command("updatestats")]
     [Summary("`Updates` the actual XP of the user on the database.")]
     [Alias("us")]
     public async Task UpdateStatsAsync(int xpfame, [Remainder]SocketGuildUser user)
