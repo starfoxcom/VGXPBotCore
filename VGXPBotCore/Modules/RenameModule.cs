@@ -14,15 +14,15 @@ using System.Data.SQLite;
 
 namespace VGXPBotCore.Modules
 {
-  public class UpdateStatsModule : InteractiveBase
+  public class RenameModule : InteractiveBase
   {
 
     [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
     [RequireOwner(Group = "Permission")]
-    [Command("updatestats")]
-    [Summary("`Updates` the actual XP of the user on the database.")]
-    [Alias("us")]
-    public async Task UpdateStatsAsync(int xpfame, [Remainder]SocketGuildUser user)
+    [Command("rename")]
+    [Summary("`Updates` the Vainglory username of the specified user on the database.")]
+    [Alias("rn")]
+    public async Task RenameUsernameAsync(string username, [Remainder]SocketGuildUser user)
     {
 
       //On user on database
@@ -31,7 +31,7 @@ namespace VGXPBotCore.Modules
 
         //Execute query
         CoreModule.ExecuteQuery(Context.Guild.Id,
-          $"UPDATE users SET actualXP = {xpfame} where id = {user.Id};");
+          $"UPDATE users SET name = \"{username}\" where id = {user.Id};");
 
         //Set embed object
         var embed = CoreModule.SimpleEmbed(
@@ -45,8 +45,9 @@ namespace VGXPBotCore.Modules
         //Send notification
         CoreModule.SendNotification(
           Context.Guild.Id,
-          "User stats updated",
-          $"{Context.User.Mention} **updated** the user {user.Mention} database stats.");
+          "User username updated",
+          $"{Context.User.Mention} **updated** the user {user.Mention} database " +
+          $"username to **`{username}`**.");
       }
 
       //On user not on database

@@ -19,7 +19,7 @@ namespace VGXPBotCore.Modules
 
     [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
     [RequireOwner(Group = "Permission")]
-    [Command("setprefix", RunMode = RunMode.Async)]
+    [Command("setprefix")]
     [Summary("`Sets` the prefix for the bot.")]
     [Alias("sp")]
     public async Task SetPrefixAsync(string prefix)
