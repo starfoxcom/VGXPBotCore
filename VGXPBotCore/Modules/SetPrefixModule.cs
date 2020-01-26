@@ -42,7 +42,7 @@ namespace VGXPBotCore.Modules
       CoreModule.SendNotification(
         Context.Guild.Id,
         "prefix changed",
-        $"{Context.User.Mention} **changed** the prefix to **{prefix}**.");
+        $"{Context.User.Mention} **changed** the prefix to **`{prefix}`**.");
     }
   }
 }
