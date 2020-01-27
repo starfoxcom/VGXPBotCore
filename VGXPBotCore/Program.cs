@@ -275,7 +275,7 @@ namespace VGXPBotCore
         var embed = Modules.CoreModule.SimpleEmbed(
           Color.Gold,
           $"Thank you for adding me to your server!",
-          $"Seems I was added while I was sleeping, these is my default configuration:\n" +
+          $"Seems I was added while I was sleeping, this is my default configuration:\n" +
           $"**`~`** - This is my default prefix.\n" +
           $"**`Not set`** - The guild role has to be **set by you**.\n" +
           $"**`Off`** -  The notifications are **Off** by default.\n" +
