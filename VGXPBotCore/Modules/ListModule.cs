@@ -61,7 +61,7 @@ namespace VGXPBotCore.Modules
           using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader())
           {
 
-            //Read settings info
+            //Read users info
             while (dbDataReader.Read())
             {
               socketUser = Context.Guild.Users.FirstOrDefault(

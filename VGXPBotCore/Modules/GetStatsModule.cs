@@ -55,7 +55,7 @@ namespace VGXPBotCore.Modules
               using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader())
               {
 
-                //Read settings info
+                //Read user stats info
                 dbDataReader.Read();
 
                 //Create and set embed object
@@ -171,7 +171,7 @@ namespace VGXPBotCore.Modules
               using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader())
               {
 
-                //Read settings info
+                //Read user stats info
                 dbDataReader.Read();
 
                 //Create and set embed object
