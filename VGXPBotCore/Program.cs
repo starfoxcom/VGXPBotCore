@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.IO;
+using System.Collections.Generic;
+
+using System.Data.SQLite;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -54,6 +58,9 @@ namespace VGXPBotCore
 
       //Set user left
       _client.UserLeft += UserLeft;
+
+      //Set Client ready
+      _client.GuildAvailable += OnAbsence;
 
       //Set game
       await _client.SetGameAsync("~help for commands");
@@ -206,6 +213,100 @@ namespace VGXPBotCore
           user.Guild.Id,
           "User deleted",
           $"{user.Mention} **left** the server, {user.Mention} has been **deleted** from the database.");
+      }
+
+      return Task.CompletedTask;
+    }
+
+    private Task OnAbsence(SocketGuild server)
+    {
+      //Create and set socket user
+      SocketUser socketUser = null;
+
+      //Create and set the users to delete list
+      List<string> usersToDelete = new List<string>();
+
+      //On database exists
+      if (File.Exists($"Databases/{server.Id}.db"))
+      {
+
+        //Create and set the database connection
+        using (SQLiteConnection dbConnection =
+          new SQLiteConnection($"Data Source = Databases/{server.Id}.db; Version = 3;"))
+        {
+          //Open the connection
+          dbConnection.Open();
+
+          //Set query
+          using (SQLiteCommand dbCommand =
+            new SQLiteCommand("SELECT id, name FROM users ", dbConnection))
+          {
+
+            //Create and set the database reader from the command query
+            using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader())
+            {
+
+              //Read users info
+              while (dbDataReader.Read())
+              {
+                socketUser = server.Users.FirstOrDefault(
+                  x => x.Id == Convert.ToUInt64(dbDataReader["id"]));
+
+                //On user not found
+                if (socketUser == null)
+                {
+
+                  //Add user to the list
+                  usersToDelete.Add($"{dbDataReader["id"]}");
+                }
+              }
+            }
+          }
+        }
+      }
+
+      //On database doesn't exists
+      else
+      {
+
+        //Create the server database
+        Modules.CoreModule.CreateDB(server.Id);
+
+        var embed = Modules.CoreModule.SimpleEmbed(
+          Color.Gold,
+          $"Thank you for adding me to your server!",
+          $"Seems I was added while I was sleeping, these is my default configuration:\n" +
+          $"**`~`** - This is my default prefix.\n" +
+          $"**`Not set`** - The guild role has to be **set by you**.\n" +
+          $"**`Off`** -  The notifications are **Off** by default.\n" +
+          $"**`Not set`** - The  notification's channel has to be **set by you**.\n\n" +
+          $"You can get more info about my commands using the **`~help`** command.");
+
+        //Send message to channel
+        server.DefaultChannel.SendMessageAsync("", false, embed.Build());
+      }
+
+      //On users to delete
+      if (usersToDelete.Count != 0)
+      {
+        var embed = Modules.CoreModule.SimpleEmbed(
+          Color.Gold,
+          $"Users who left the server when I was away",
+          $"These users where deleted from the database, since they're not on the server.");
+
+        for (int i = 0; i < usersToDelete.Count; ++i)
+        {
+
+          //Set embed content
+          embed.AddField($"{i + 1}", $"<@{usersToDelete[i]}>", true);
+
+          //Execute query
+          Modules.CoreModule.ExecuteQuery(server.Id,
+            $"DELETE FROM users WHERE id = {usersToDelete[i]};");
+        }
+
+        //Send message to channel
+        server.DefaultChannel.SendMessageAsync("@everyone", false, embed.Build());
       }
 
       return Task.CompletedTask;
