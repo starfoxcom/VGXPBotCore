@@ -26,6 +26,8 @@ namespace VGXPBotCore
     //Bot token
     string token = GetToken("token.txt");
 
+    //TODO: UserLeftOnAbsence function
+
     public static void Main(string[] argss)
       => new Program().MainAsync().GetAwaiter().GetResult();
 
