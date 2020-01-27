@@ -25,7 +25,7 @@ namespace VGXPBotCore.Modules
     public async Task GoalAsync(int goal)
     {
 
-      //Create and set users list
+      //Create and set SocketUser object
       SocketUser user;
 
       //Create and set embed object
