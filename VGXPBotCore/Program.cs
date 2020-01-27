@@ -280,7 +280,9 @@ namespace VGXPBotCore
           $"**`Not set`** - The guild role has to be **set by you**.\n" +
           $"**`Off`** -  The notifications are **Off** by default.\n" +
           $"**`Not set`** - The  notification's channel has to be **set by you**.\n\n" +
-          $"You can get more info about my commands using the **`~help`** command.");
+          $"You can get more info about my commands using the **`~help`** command.\n" +
+          $"(NOTE: The **`~help`** command shows the ones who the user can use based on it's " +
+          $"permissions on the server, most administration commands require the **`kick members`** permission.)");
 
         //Send message to channel
         server.DefaultChannel.SendMessageAsync("", false, embed.Build());
