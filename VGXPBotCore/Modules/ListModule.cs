@@ -42,8 +42,6 @@ namespace VGXPBotCore.Modules
       //Create and set user counter
       int userCount = 0;
 
-      List<string> usersToDelete = new List<string>();
-
       //Create and set the database connection
       using (SQLiteConnection dbConnection =
         new SQLiteConnection($"Data Source = Databases/{Context.Guild.Id}.db; Version = 3;"))
@@ -67,63 +65,28 @@ namespace VGXPBotCore.Modules
               socketUser = Context.Guild.Users.FirstOrDefault(
                 x => x.Id == Convert.ToUInt64(dbDataReader["id"]));
 
-              //On user not found
-              if (socketUser == null)
+              //On less than 25 users
+              if (userCount < 25)
               {
 
-                usersToDelete.Add($"{dbDataReader["id"]}");
+                //Set embed content
+                embed.AddField($"{dbDataReader["name"]}", $"{socketUser.Mention}", true);
+
               }
 
-              //On user found
+              //On more than 25 users
               else
               {
 
-                //On less than 25 users
-                if (userCount < 25)
-                {
-
-                  //Set embed content
-                  embed.AddField($"{dbDataReader["name"]}", $"{socketUser.Mention}", true);
-
-                }
-
-                //On more than 25 users
-                else
-                {
-
-                  //Set embed content
-                  embed2.AddField($"{dbDataReader["name"]}", $"{socketUser.Mention}", true);
-                }
-
-                //Add counter
-                ++userCount;
+                //Set embed content
+                embed2.AddField($"{dbDataReader["name"]}", $"{socketUser.Mention}", true);
               }
+
+              //Add counter
+              ++userCount;
             }
           }
         }
-      }
-
-      //On users to delete
-      if(usersToDelete.Count != 0)
-      {
-        var embed3 = CoreModule.SimpleEmbed(
-          Color.Gold,
-          $"Users not found",
-          $"These users where deleted from the database, since they're not on the server");
-
-        for (int i = 0; i < usersToDelete.Count; ++i)
-        {
-
-          //Set embed content
-          embed3.AddField($"{i + 1}", $"<@{usersToDelete[i]}>", true);
-
-          //Execute query
-          CoreModule.ExecuteQuery(Context.Guild.Id,
-            $"DELETE FROM users WHERE id = {usersToDelete[i]};");
-        }
-
-        //Reply embed
-        await ReplyAsync("", false, embed3.Build());
       }
 
       //Set embed content
