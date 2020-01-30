@@ -261,6 +261,31 @@ namespace VGXPBotCore.Modules
       }
     }
 
+    //Execute query
+    public static void ExecuteQuery(
+      string _databaseName,
+      string _query)
+    {
+
+      //Create and set the database connection
+      using (SQLiteConnection dbConnection =
+        new SQLiteConnection($"Data Source = Databases/{_databaseName}.db; Version = 3;"))
+      {
+
+        //Open the connection
+        dbConnection.Open();
+
+        //Set query
+        using (SQLiteCommand dbCommand =
+          new SQLiteCommand(_query, dbConnection))
+        {
+
+          //Execute the query
+          dbCommand.ExecuteNonQuery();
+        }
+      }
+    }
+
     //Get guild prefix
     public static string GetPrefix(
       ulong _serverId)
