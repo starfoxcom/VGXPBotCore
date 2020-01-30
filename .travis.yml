@@ -1,2 +1,7 @@
 language: csharp
-solution: solution-name.sln
+mono: none
+dotnet: 2.1
+script:
+ - dotnet restore
+solution: VGXPBotCore.sln
+os: windows
