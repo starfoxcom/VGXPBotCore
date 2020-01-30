@@ -38,6 +38,8 @@ namespace VGXPBotCore
 
     public async Task MainAsync()
     {
+      //On servers database not exists
+      Modules.CoreModule.createServersDB();
 
       //Set socket client
       _client = new DiscordSocketClient();
