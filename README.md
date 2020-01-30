@@ -1,6 +1,6 @@
 # Vainglory XP Fame Tracker for Discord
 
-
+[![Build Status](https://travis-ci.com/starfoxcom/VGXPBotCore.svg?branch=master)](https://travis-ci.com/starfoxcom/VGXPBotCore)
 This is a simple, yet useful Discord Bot made on .Net Core with the help of [Discord.Net](https://github.com/discord-net/Discord.Net) which makes easier to keep track of the XP Fame of members on a guild in the mobile game Vainglory.
 
 ## How it works

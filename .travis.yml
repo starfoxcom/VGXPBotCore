@@ -1,7 +1,6 @@
 dist: xenial
 language: csharp
 mono: none
-sudo: required
 dotnet: 2.1
 script:
  - dotnet restore
