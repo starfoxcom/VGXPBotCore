@@ -19,7 +19,45 @@ namespace VGXPBotCore.Modules
 {
   public static class CoreModule
   {
+    public static void createServersDB()
+    {
+      //In case that the database file don't exist
+      if (!File.Exists($"Databases/servers.db"))
+      {
 
+        //In case that the database folder don't exist
+        if (!Directory.Exists("Databases"))
+        {
+
+          //Create directory
+          Directory.CreateDirectory("Databases");
+        }
+
+        //Create Database file
+        using (File.Create($"Databases/servers.db")) { }
+
+        //Create and set the database connection
+        using (SQLiteConnection dbConnection =
+          new SQLiteConnection($"Data Source = Databases/servers.db; Version = 3;"))
+        {
+
+          //Open the connection
+          dbConnection.Open();
+
+          //Create all the tables needed for the database
+          using (SQLiteCommand dbCommand = new SQLiteCommand(
+          "CREATE TABLE servers (" +
+          "server_id integer NOT NULL," +
+          "status text NOT NULL" +
+          ");", dbConnection))
+          {
+
+            //Execute the query
+            dbCommand.ExecuteNonQuery();
+          }
+        }
+      }
+    }
     //Create a simple embed object
     public static EmbedBuilder SimpleEmbed(
       Color _color,
