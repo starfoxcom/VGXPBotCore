@@ -136,8 +136,7 @@ namespace VGXPBotCore
       }
 
       //Determine if the message is a command with prefix
-      if (!(File.Exists($"Databases/{context.Guild.Id}.db") ? 
-        message.HasStringPrefix(prefix, ref argPos) : 
+      if (!(message.HasStringPrefix(prefix, ref argPos) || 
         message.HasCharPrefix('~', ref argPos) ||
         message.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
 
