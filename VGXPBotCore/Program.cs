@@ -138,7 +138,8 @@ namespace VGXPBotCore
       //Determine if the message is a command with prefix
       if (!(message.HasStringPrefix(prefix, ref argPos) || 
         message.HasCharPrefix('~', ref argPos) ||
-        message.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
+        message.HasMentionPrefix(_client.CurrentUser, ref argPos)) ||
+        message.Author.IsBot) return;
 
       //Execute the command. (result does not indicate a return value, 
       //rather an object stating if the command executed successfully)
