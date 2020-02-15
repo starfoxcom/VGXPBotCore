@@ -54,7 +54,7 @@ namespace VGXPBotCore {
     MainAsync()
     {
       //Create the servers database.
-      Modules.CoreModule.createServersDB();
+      Modules.CoreModule.CreateServersDB();
 
       //Create discord socket client.
       g_client = new DiscordSocketClient();
