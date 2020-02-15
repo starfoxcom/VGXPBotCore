@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Net;
 using System.Text;
 using System.Linq;
@@ -80,7 +80,7 @@ namespace VGXPBotCore.Modules
     }
 
     //User exists on database
-    public static bool UserDBExists(
+    public static bool UserExistsServerDB(
       ulong _serverId,
       ulong _userId)
     {
@@ -215,7 +215,7 @@ namespace VGXPBotCore.Modules
     }
 
     //Create Server Database
-    public static void CreateDB(
+    public static void CreateServerDB(
       ulong _serverId)
     {
 
@@ -390,7 +390,7 @@ namespace VGXPBotCore.Modules
     }
 
     //Delete server Database
-    public static void DeleteDB(
+    public static void DeleteServerDB(
       ulong _serverId)
     {
       if(File.Exists($"Databases/{_serverId}.db"))

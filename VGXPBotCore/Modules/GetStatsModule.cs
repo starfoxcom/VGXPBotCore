@@ -34,7 +34,7 @@ namespace VGXPBotCore.Modules
       {
 
         //On user on database
-        if (CoreModule.UserDBExists(Context.Guild.Id, user.Id))
+        if (CoreModule.UserExistsServerDB(Context.Guild.Id, user.Id))
         {
 
           //Create and set the database connection
@@ -150,7 +150,7 @@ namespace VGXPBotCore.Modules
       {
 
         //On user on database
-        if (CoreModule.UserDBExists(Context.Guild.Id, user.Id))
+        if (CoreModule.UserExistsServerDB(Context.Guild.Id, user.Id))
         {
 
           //Create and set the database connection
