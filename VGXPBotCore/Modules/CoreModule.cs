@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Text;
 using System.Linq;
@@ -73,7 +73,7 @@ namespace VGXPBotCore.Modules
 
       //Set embed content
       embed
-        .WithAuthor(_author, Program._client.CurrentUser.GetAvatarUrl())
+        .WithAuthor(_author, Program.g_client.CurrentUser.GetAvatarUrl())
         .WithDescription(_description);
 
       return embed;
@@ -435,7 +435,7 @@ namespace VGXPBotCore.Modules
 
               //Create and set socket text channel
               SocketTextChannel channel = 
-                Program._client.GetGuild(
+                Program.g_client.GetGuild(
                   _serverId).Channels.FirstOrDefault(
                   x => x.Name == $"{dbDataReader["notificationChannel"]}") as SocketTextChannel;
 
@@ -453,7 +453,7 @@ namespace VGXPBotCore.Modules
                 embed.WithCurrentTimestamp();
 
                 //Send message to channel
-                Program._client.GetGuild(
+                Program.g_client.GetGuild(
                   _serverId).GetTextChannel(channel.Id).SendMessageAsync("", false, embed.Build());
               }
 
@@ -469,7 +469,7 @@ namespace VGXPBotCore.Modules
                   "please **set** the **notification channel **with** `~setchannel` command**.");
 
                 //Send message to channel
-                Program._client.GetGuild(
+                Program.g_client.GetGuild(
                   _serverId).DefaultChannel.SendMessageAsync("", false, embed.Build());
               }
             }

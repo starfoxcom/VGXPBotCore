@@ -33,7 +33,7 @@ namespace VGXPBotCore.Modules
         "These are the commands **you can use**");
 
       //For each module on command service
-      foreach (var module in Program._commands.Modules)
+      foreach (var module in Program.g_commands.Modules)
       {
 
         //Create description string
@@ -86,7 +86,7 @@ namespace VGXPBotCore.Modules
     {
 
       //Search for the command on the command service
-      var result = Program._commands.Search(Context, command);
+      var result = Program.g_commands.Search(Context, command);
 
       //On command not found
       if (!result.IsSuccess)
