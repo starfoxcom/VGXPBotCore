@@ -12,8 +12,7 @@ using Discord.Addons.Interactive;
 
 using System.Data.SQLite;
 
-namespace VGXPBotCore.Modules
-{
+namespace VGXPBotCore.Modules {
   /// <summary>
   /// Class which contains commands to get the stats of users.
   /// </summary>
