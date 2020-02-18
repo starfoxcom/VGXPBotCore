@@ -233,7 +233,7 @@ namespace VGXPBotCore.Modules {
           //Create all the tables needed for the database.
           using (SQLiteCommand dbCommand = new SQLiteCommand("CREATE TABLE settings (" +
                                                                "prefix text NOT NULL," +
-                                                               "role text NOT NULL," +
+                                                               " role text NOT NULL," +
                                                                " notifications text" +
                                                                " NOT NULL," +
                                                                " notificationChannel text" +
