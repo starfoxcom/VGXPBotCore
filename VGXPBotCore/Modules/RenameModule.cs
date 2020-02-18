@@ -23,6 +23,9 @@ namespace VGXPBotCore.Modules {
     /// </summary>
     /// <param name="_username">The new username to update.</param>
     /// <param name="_user">The user to update their username.</param>
+    /// <remarks>
+    /// The user requires either be able to kick members on the server or be the bot owner.
+    /// </remarks>
     [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
     [RequireOwner(Group = "Permission")]
     [Command("rename")]

@@ -20,6 +20,9 @@ namespace VGXPBotCore.Modules {
     /// <summary>
     /// Command task which shows a list of the users on the server database.
     /// </summary>
+    /// <remarks>
+    /// The user requires either be able to kick members on the server or be the bot owner.
+    /// </remarks>
     [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
     [RequireOwner(Group = "Permission")]
     [Command("list")]
@@ -28,7 +31,7 @@ namespace VGXPBotCore.Modules {
     public async Task
     ListAsync()
     {
-      //Create & set socket user.
+      //Create and set socket user.
       SocketUser socketUser = null;
 
       //Create and set embed object.

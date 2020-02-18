@@ -120,7 +120,9 @@ namespace VGXPBotCore.Modules {
     /// Command task to get the stats of a specific user.
     /// </summary>
     /// <param name="_user">The user to get the stats.</param>
-    /// <returns></returns>
+    /// <remarks>
+    /// The user requires either be able to kick members on the server or be the bot owner.
+    /// </remarks>
     [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
     [RequireOwner(Group = "Permission")]
     [Command("stats")]
