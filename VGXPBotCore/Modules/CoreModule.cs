@@ -435,7 +435,7 @@ namespace VGXPBotCore.Modules {
                                         "Notifications are `On`, but the **channel** to" +
                                           " send them is not found or is not set," +
                                           " please **set** the **notification channel**" +
-                                          " with the **`~setchannel` command**.");
+                                          " with **`~setchannel`**.");
 
                 //Send message to default channel.
                 Program.

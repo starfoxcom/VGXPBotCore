@@ -232,7 +232,7 @@ namespace VGXPBotCore {
                                                    $"**`~`** - This is my default prefix.\n" +
                                                    $"**`Not set`** - The guild role has to" +
                                                    $" be **set by you**.\n" +
-                                                   $"**`Off`** -  The notifications are" +
+                                                   $"**`Off`** - The notifications are" +
                                                    $" **Off** by default.\n" +
                                                    $"**`Not set`** - The notification's" +
                                                    $" channel has to be **set by you**.\n\n" +
@@ -372,7 +372,7 @@ namespace VGXPBotCore {
                                                        $" my default prefix.\n" +
                                                        $"**`Not set`** - The guild role" +
                                                        $" has to be **set by you**.\n" +
-                                                       $"**`Off`** -  The notifications are" +
+                                                       $"**`Off`** - The notifications are" +
                                                        $" **Off** by default.\n" +
                                                        $"**`Not set`** - The notification's" +
                                                        $" channel has to be" +
