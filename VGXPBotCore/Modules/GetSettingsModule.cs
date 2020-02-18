@@ -103,7 +103,7 @@ namespace VGXPBotCore.Modules
       //Create database.
       CoreModule.CreateServerDB(Context.Guild.Id);
 
-      //Reply embed
+      //Reply embed.
       await ReplyAsync("",
                        false,
                        CoreModule.SimpleEmbed(Color.Green,
@@ -124,7 +124,7 @@ namespace VGXPBotCore.Modules
       //Delete database.
       CoreModule.DeleteServerDB(Context.Guild.Id);
 
-      //Reply embed
+      //Reply embed.
       await ReplyAsync("",
                        false,
                        CoreModule.SimpleEmbed(Color.Green,
