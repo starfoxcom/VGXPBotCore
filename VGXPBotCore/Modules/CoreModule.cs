@@ -15,462 +15,434 @@ using Newtonsoft.Json;
 
 using System.Data.SQLite;
 
-namespace VGXPBotCore.Modules
-{
+namespace VGXPBotCore.Modules {
+  /// <summary>
+  /// Class which contains the core functions for the bot commands to operate.
+  /// </summary>
   public static class CoreModule
   {
-    public static void createServersDB()
+    /// <summary>
+    /// Creates the servers database.
+    /// </summary>
+    public static void
+    CreateServersDB()
     {
-      //In case that the database file don't exist
-      if (!File.Exists($"Databases/servers.db"))
-      {
-
-        //In case that the database folder don't exist
-        if (!Directory.Exists("Databases"))
-        {
-
-          //Create directory
+      //In case that the database file don't exist.
+      if (!File.Exists($"Databases/servers.db")) {
+        //In case that the database folder don't exist.
+        if (!Directory.Exists("Databases")) {
+          //Create directory.
           Directory.CreateDirectory("Databases");
         }
 
-        //Create Database file
-        using (File.Create($"Databases/servers.db")) { }
+        //Create Database file.
+        using (File.Create($"Databases/servers.db")) {}
 
-        //Create and set the database connection
+        //Create and set the database connection.
         using (SQLiteConnection dbConnection =
-          new SQLiteConnection($"Data Source = Databases/servers.db; Version = 3;"))
-        {
-
-          //Open the connection
+               new SQLiteConnection($"Data Source = Databases/servers.db; Version = 3;")) {
+          //Open the connection.
           dbConnection.Open();
 
-          //Create all the tables needed for the database
-          using (SQLiteCommand dbCommand = new SQLiteCommand(
-          "CREATE TABLE servers (" +
-          "server_id integer NOT NULL," +
-          "status text NOT NULL" +
-          ");", dbConnection))
-          {
-
-            //Execute the query
+          //Create all the tables needed for the database.
+          using (SQLiteCommand dbCommand = new SQLiteCommand("CREATE TABLE servers (" +
+                                                               "server_id integer NOT NULL," +
+                                                               "status text NOT NULL);",
+                                                             dbConnection)) {
+            //Execute the query.
             dbCommand.ExecuteNonQuery();
           }
         }
       }
     }
-    //Create a simple embed object
-    public static EmbedBuilder SimpleEmbed(
-      Color _color,
-      string _author,
-      string _description)
+    
+    /// <summary>
+    /// Creates a simple embed object.
+    /// </summary>
+    /// <param name="_color">The stripe color of the embed bject.</param>
+    /// <param name="_author">The title of the embed object.</param>
+    /// <param name="_description">The paragraph content of the embed object.</param>
+    /// <returns>The embed object.</returns>
+    public static EmbedBuilder
+    SimpleEmbed(Color _color, string _author, string _description)
     {
+      //Create and set embed object.
+      var embed = new EmbedBuilder {
+        //Set stripe color.
+        Color = _color
+      };
 
-      //Create & set embed object
-      var embed = new EmbedBuilder();
+      //Set embed content.
+      embed.WithAuthor(_author, Program.g_client.CurrentUser.GetAvatarUrl()).
+            WithDescription(_description);
 
-      //Set stripe color
-      embed.Color = _color;
-
-      //Set embed content
-      embed
-        .WithAuthor(_author, Program._client.CurrentUser.GetAvatarUrl())
-        .WithDescription(_description);
-
+      //Return embed object.
       return embed;
     }
 
-    //User exists on database
-    public static bool UserDBExists(
-      ulong _serverId,
-      ulong _userId)
+    /// <summary>
+    /// Checks if a user exists on a server database.
+    /// </summary>
+    /// <param name="_serverId">The ID of the server.</param>
+    /// <param name="_userId">The ID of the user.</param>
+    /// <returns>true if user exists on the server database, otherwise false</returns>
+    public static bool
+    UserExistsServerDB(ulong _serverId, ulong _userId)
     {
-
-      //Create and set the database connection
+      //Create and set the database connection.
       using (SQLiteConnection dbConnection =
-        new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;"))
-      {
-
-        //Open the connection
+             new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;")) {
+        //Open the connection.
         dbConnection.Open();
 
-        //Set query
+        //Set query.
         using (SQLiteCommand dbCommand =
-          new SQLiteCommand($"SELECT id FROM users WHERE id = {_userId};", dbConnection))
-        {
-
-          //Create and set the database reader from the command query
-          using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader())
-          {
-
-            //Read users
+               new SQLiteCommand($"SELECT id FROM users WHERE id = {_userId};",
+                                 dbConnection)) {
+          //Create and set the database reader from the command query.
+          using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader()) {
+            //Read user.
             dbDataReader.Read();
 
-            //On user found
-            if(dbDataReader.StepCount > 0)
-            {
-
+            //On user found, return true.
+            if(dbDataReader.StepCount > 0) {
               return true;
             }
-
             return false;
           }
         }
       }
     }
 
-    //Username exists on Vainglory
-    public static bool UserVGExists(
-      string _username,
-      string _region)
+    /// <summary>
+    /// Checks if the user exists on the Vainglory API.
+    /// </summary>
+    /// <param name="_username">The Vainglory username.</param>
+    /// <param name="_region">The region of the Vainglory username.</param>
+    /// <returns>true if user exists on the Vainglory API, otherwise false</returns>
+    /// <remarks>
+    /// The Vainglory API doesn't exist anymore, so this function is no longer needed.
+    /// </remarks>
+    //public static bool
+    //UserVGExists(string _username, string _region)
+    //{
+    //  //Create & set found checker.
+    //  bool found = false;
+
+    //  //Create & set socket URL.
+    //  string sURL = $"https://api.dc01.gamelockerapp.com/shards/{_region}/players?" +
+    //                  $"filter[playerNames]={_username}";
+
+    //  //Create & set web request.
+    //  var WRGetURL = (HttpWebRequest)WebRequest.Create(sURL);
+
+    //  //Set method.
+    //  WRGetURL.Method = "Get";
+
+    //  //Set header with Authorization API Key (API no longer exist, so no security breach
+    //  // here with submitting API token to git hub).
+    //  WRGetURL.Headers.Add("Authorization",
+    //                       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ" +
+    //                         "kZTMxMDM0MC1mOGI3LTAxMzQtYjdlYS0wMjQyYWMxMTAwM" +
+    //                         "GIiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNDkxMDE" +
+    //                         "2NzM3LCJwdWIiOiJzZW1jIiwidGl0bGUiOiJ2YWluZ2xvc" +
+    //                         "nkiLCJhcHAiOiJkZTJhZmRjMC1mOGI3LTAxMzQtYjdlOC0" +
+    //                         "wMjQyYWMxMTAwMGIiLCJzY29wZSI6ImNvbW11bml0eSIsI" +
+    //                         "mxpbWl0IjoxMH0.QxjHDvJEN-lO0KV9PyJZVprL4Zt6cV3awKjxZx3exzc");
+
+    //  //Set accept.
+    //  WRGetURL.Accept = "application/vnd.api+json";
+
+    //  //Create and set web response.
+    //  HttpWebResponse response = null;
+
+    //  //Try catch web response.
+    //  try {
+    //    //try get web response.
+    //    response = (HttpWebResponse)WRGetURL.GetResponse();
+    //  }
+    //  //In case that try fails.
+    //  catch (WebException e) {
+    //    //On a protocol error.
+    //    if (e.Status == WebExceptionStatus.ProtocolError) {
+    //      //Set the response.
+    //      response = (HttpWebResponse)e.Response;
+
+    //      //Log error code on console.
+    //      Console.Write("Errorcode: {0}\n", (int)response.StatusCode);
+    //    }
+    //    //Otherwise write the error on console.
+    //    else {
+    //      //Log the error.
+    //      Console.Write("Error: {0}\n", e.Status);
+    //    }
+    //  }
+    //  finally {
+    //    //On getting a web response.
+    //    if (response != null) {
+    //      //On Vainglory username not found.
+    //      if (response.StatusDescription == "Not Found" ||
+    //        response.StatusDescription == "Internal Server Error") {
+    //        found = false;
+    //      }
+    //      //Otherwise Vainglory username found.
+    //      else {
+    //        found = true;
+    //      }
+
+    //      //Close the connection.
+    //      response.Close();
+    //    }
+    //  }
+
+    //  //On not found, return false.
+    //  if (found != true) {
+    //    return false;
+    //  }
+    //  //Otherwise return true.
+    //  else {
+    //    return true;
+    //  }
+    //}
+
+    /// <summary>
+    /// Creates the server database.
+    /// </summary>
+    /// <param name="_serverId">The ID of the server.</param>
+    public static void
+    CreateServerDB(ulong _serverId)
     {
-
-      //Create & set found checker
-      bool found = false;
-
-      //Create & set socket URL
-      string sURL = $"https://api.dc01.gamelockerapp.com/shards/{_region}/players?" +
-        $"filter[playerNames]={_username}";
-
-      //Create & set web request
-      var WRGetURL = (HttpWebRequest)WebRequest.Create(sURL);
-
-      //Set method
-      WRGetURL.Method = "Get";
-
-      //Set header with Authorization API Key
-      WRGetURL.Headers.Add("Authorization", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9." +
-        "eyJqdGkiOiJkZTMxMDM0MC1mOGI3LTAxMzQtYjdlYS0wMjQyYWMxMTAwMGIiLCJpc3MiOiJnY" +
-        "W1lbG9ja2VyIiwiaWF0IjoxNDkxMDE2NzM3LCJwdWIiOiJzZW1jIiwidGl0bGUiOiJ2YWluZ2" +
-        "xvcnkiLCJhcHAiOiJkZTJhZmRjMC1mOGI3LTAxMzQtYjdlOC0wMjQyYWMxMTAwMGIiLCJzY29" +
-        "wZSI6ImNvbW11bml0eSIsImxpbWl0IjoxMH0.QxjHDvJEN-lO0KV9PyJZVprL4Zt6cV3awKjxZx3exzc");
-
-      //Set accept
-      WRGetURL.Accept = "application/vnd.api+json";
-
-      HttpWebResponse response = null;
-
-      try
-      {
-
-        //try get web response
-        response = (HttpWebResponse)WRGetURL.GetResponse();
-      }
-
-      //In case that try fails
-      catch (WebException e)
-      {
-
-        //On a protocol error
-        if (e.Status == WebExceptionStatus.ProtocolError)
-        {
-
-          //Set the response
-          response = (HttpWebResponse)e.Response;
-
-          //Write the error code on console
-          Console.Write("Errorcode: {0}\n", (int)response.StatusCode);
-        }
-
-        //Otherwise write the error on console
-        else
-        {
-
-          Console.Write("Error: {0}\n", e.Status);
-        }
-      }
-      finally
-      {
-        if (response != null)
-        {
-
-          //On Vainglory username not found
-          if (response.StatusDescription == "Not Found" ||
-            response.StatusDescription == "Internal Server Error")
-          {
-            found = false;
-          }
-
-          //Otherwise Vainglory username found
-          else
-          {
-            found = true;
-          }
-
-          //Close the connection
-          response.Close();
-        }
-      }
-
-      //On not found
-      if (found != true)
-      {
-        return false;
-      }
-
-      //Otherwise on found
-      else
-      {
-        return true;
-      }
-    }
-
-    //Create Server Database
-    public static void CreateDB(
-      ulong _serverId)
-    {
-
-      //In case that the database file don't exist
-      if (!File.Exists($"Databases/{_serverId}.db"))
-      {
-
-        //In case that the database folder don't exist
-        if(!Directory.Exists("Databases"))
-        {
-
-          //Create directory
+      //In case that the database file don't exist.
+      if (!File.Exists($"Databases/{_serverId}.db")) {
+        //In case that the database folder don't exist.
+        if(!Directory.Exists("Databases")) {
+          //Create directory.
           Directory.CreateDirectory("Databases");
         }
 
-        //Create Database file
-        using (File.Create($"Databases/{_serverId}.db")) { }
+        //Create Database file.
+        using (File.Create($"Databases/{_serverId}.db")) {}
 
-        //Create and set the database connection
+        //Create and set the database connection.
         using (SQLiteConnection dbConnection =
-          new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;"))
-        { 
-
-          //Open the connection
+               new SQLiteConnection($"Data Source = Databases/{_serverId}.db;" +
+                                      $" Version = 3;")) { 
+          //Open the connection.
           dbConnection.Open();
 
-          //Create all the tables needed for the database
-          using (SQLiteCommand dbCommand = new SQLiteCommand(
-          "CREATE TABLE settings (" +
-          "prefix text NOT NULL," +
-          "role text NOT NULL, " +
-          "notifications text NOT NULL, " +
-          "notificationChannel text NOT NULL" +
-          ");" +
-          "CREATE TABLE users (" +
-          "id integer NOT NULL, " +
-          "name text NOT NULL, " +
-          "region text NOT NULL, " +
-          "actualXP integer NOT NULL, " +
-          "lastXP integer NOT NULL" +
-          ");" +
-          //WIP - participants table purpose is not well defined yet
-          //"CREATE TABLE participants (" +
-          //"id integer NOT NULL, " +
-          //"payment integer NOT NULL" +
-          //");" +
-          "INSERT INTO settings " +
-          "(prefix, role, notifications, notificationChannel) values" +
-          "('~', 'not set', 'Off', 'not set');", dbConnection))
-          {
-
-            //Execute the query
+          //Create all the tables needed for the database.
+          using (SQLiteCommand dbCommand = new SQLiteCommand("CREATE TABLE settings (" +
+                                                               "prefix text NOT NULL," +
+                                                               " role text NOT NULL," +
+                                                               " notifications text" +
+                                                               " NOT NULL," +
+                                                               " notificationChannel text" +
+                                                               " NOT NULL);" +
+                                                               "CREATE TABLE users (" +
+                                                               "id integer NOT NULL," +
+                                                               " name text NOT NULL," +
+                                                               " region text NOT NULL," +
+                                                               " actualXP integer NOT NULL," +
+                                                               " lastXP integer NOT NULL);" +
+                                                               "INSERT INTO settings" +
+                                                               " (prefix, role," +
+                                                               " notifications," +
+                                                               " notificationChannel)" +
+                                                               " values('~', 'not set'," +
+                                                               " 'Off', 'not set');",
+                                                             dbConnection)) {
+            //Execute the query.
             dbCommand.ExecuteNonQuery();
           }
         }
       }
     }
 
-    //Execute query
-    public static void ExecuteQuery(
-      ulong _serverId,
-      string _query)
+    /// <summary>
+    /// Executes a SQLite query on a server database.
+    /// </summary>
+    /// <param name="_serverId">The ID of the server.</param>
+    /// <param name="_query">The query to execute.</param>
+    public static void
+    ExecuteQuery(ulong _serverId, string _query)
     {
-
-      //Create and set the database connection
+      //Create and set the database connection.
       using (SQLiteConnection dbConnection =
-        new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;"))
-      {
-
-        //Open the connection
+             new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;")) {
+        //Open the connection.
         dbConnection.Open();
 
-        //Set query
-        using (SQLiteCommand dbCommand =
-          new SQLiteCommand(_query, dbConnection))
-        {
-
-          //Execute the query
+        //Create and set query.
+        using (SQLiteCommand dbCommand = new SQLiteCommand(_query, dbConnection)) {
+          //Execute the query.
           dbCommand.ExecuteNonQuery();
         }
       }
     }
 
-    //Execute query
-    public static void ExecuteQuery(
-      string _databaseName,
-      string _query)
+    /// <summary>
+    /// Executes a SQLite query on a database.
+    /// </summary>
+    /// <param name="_databaseNameFile">The file name of the database.</param>
+    /// <param name="_query">The query to execute.</param>
+    public static void
+    ExecuteQuery(string _databaseNameFile, string _query)
     {
-
-      //Create and set the database connection
+      //Create and set the database connection.
       using (SQLiteConnection dbConnection =
-        new SQLiteConnection($"Data Source = Databases/{_databaseName}.db; Version = 3;"))
-      {
-
-        //Open the connection
+             new SQLiteConnection($"Data Source = Databases/{_databaseNameFile}.db;" +
+             $" Version = 3;")) {
+        //Open the connection.
         dbConnection.Open();
 
-        //Set query
-        using (SQLiteCommand dbCommand =
-          new SQLiteCommand(_query, dbConnection))
-        {
-
-          //Execute the query
+        //Create and set query.
+        using (SQLiteCommand dbCommand = new SQLiteCommand(_query, dbConnection)) {
+          //Execute the query.
           dbCommand.ExecuteNonQuery();
         }
       }
     }
 
-    //Get guild prefix
-    public static string GetPrefix(
-      ulong _serverId)
+    /// <summary>
+    /// Gets the server bot prefix.
+    /// </summary>
+    /// <param name="_serverId">The ID of the server.</param>
+    /// <returns>The bot prefix of the server.</returns>
+    public static string GetPrefix(ulong _serverId)
     {
-
-      //Create and set the database connection
+      //Create and set the database connection.
       using (SQLiteConnection dbConnection =
-        new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;"))
-      {
-
-        //Open the connection
+             new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;")) {
+        //Open the connection.
         dbConnection.Open();
 
-        //Set query
-        using (SQLiteCommand dbCommand =
-          new SQLiteCommand("Select prefix FROM settings LIMIT 1", dbConnection))
-        {
-
-          //Create and set the database reader from the command query
-          using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader())
-          {
-
-            //Read settings info
+        //Create and set query.
+        using (SQLiteCommand dbCommand = new SQLiteCommand("Select prefix FROM" +
+                                                             " settings LIMIT 1",
+                                                           dbConnection)) {
+          //Create and set the database reader from the command query.
+          using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader()) {
+            //Read settings info.
             dbDataReader.Read();
 
-            //Return prefix
+            //Return the server prefix.
             return $"{dbDataReader["prefix"]}";
           }
         }
       }
     }
 
-    //Get guild member role
-    public static SocketRole GetRole(
-      ulong _serverId,
-      SocketCommandContext _context)
+    /// <summary>
+    /// Gets the guild member role.
+    /// </summary>
+    /// <param name="_serverId">The ID of the server.</param>
+    /// <param name="_context">The context of the command.</param>
+    /// <returns>The guild member role.</returns>
+    public static SocketRole GetRole(ulong _serverId, SocketCommandContext _context)
     {
-
-      //Create and set the database connection
+      //Create and set the database connection.
       using (SQLiteConnection dbConnection =
-        new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;"))
-      {
-
-        //Open the connection
+             new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;")) {
+        //Open the connection.
         dbConnection.Open();
 
-        //Set query
+        //Create and set query.
         using (SQLiteCommand dbCommand =
-          new SQLiteCommand("SELECT role FROM settings LIMIT 1;", dbConnection))
-        {
-
-          //Create and set the database reader from the command query
-          using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader())
-          {
-
-            //Read role
+               new SQLiteCommand("SELECT role FROM settings LIMIT 1;", dbConnection)) {
+          //Create and set the database reader from the command query.
+          using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader()) {
+            //Read role.
             dbDataReader.Read();
 
-            //Return role
-            return _context.Guild.Roles.FirstOrDefault(x => x.Name == $"{dbDataReader["role"]}");
+            //Return role.
+            return _context.
+                   Guild.
+                   Roles.
+                   FirstOrDefault(x => x.Name == $"{dbDataReader["role"]}");
           }
         }
       }
     }
 
-    //Delete server Database
-    public static void DeleteDB(
-      ulong _serverId)
+    /// <summary>
+    /// Deletes the server database.
+    /// </summary>
+    /// <param name="_serverId">The ID of the server.</param>
+    public static void
+    DeleteServerDB(ulong _serverId)
     {
-      if(File.Exists($"Databases/{_serverId}.db"))
-      {
+      //On database exists, delete it.
+      if(File.Exists($"Databases/{_serverId}.db")) {
         File.Delete($"Databases/{_serverId}.db");
       }
     }
 
-    //Send notification
-    public static void SendNotification(
-      ulong _serverId,
-      string _author,
-      string _description)
+    /// <summary>
+    /// Sends a notification message.
+    /// </summary>
+    /// <param name="_serverId">The ID of the server.</param>
+    /// <param name="_author">The title of the embed object.</param>
+    /// <param name="_description">The paragraph content of the embed object.</param>
+    public static void
+    SendNotification(ulong _serverId, string _author, string _description)
     {
-
-      //Create and set the database connection
+      //Create and set the database connection.
       using (SQLiteConnection dbConnection =
-        new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;"))
-      {
-
-        //Open the connection
+             new SQLiteConnection($"Data Source = Databases/{_serverId}.db; Version = 3;")) {
+        //Open the connection.
         dbConnection.Open();
 
-        //Set query
+        //Create and set query.
         using (SQLiteCommand dbCommand =
-          new SQLiteCommand("SELECT notifications, notificationChannel FROM settings LIMIT 1;", dbConnection))
-        {
-
-          //Create and set the database reader from the command query
-          using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader())
-          {
-
-            //Read settings info
+               new SQLiteCommand("SELECT notifications, notificationChannel" +
+                                   " FROM settings LIMIT 1;",
+                                 dbConnection)) {
+          //Create and set the database reader from the command query.
+          using (SQLiteDataReader dbDataReader = dbCommand.ExecuteReader()) {
+            //Read settings info.
             dbDataReader.Read();
 
-            //Create and set socket role
+            //Create and set notification flag.
             string notificationFlag = $"{dbDataReader["notifications"]}";
 
-            //On notifications On
-            if (notificationFlag == "On")
-            {
+            //On notifications activated.
+            if (notificationFlag == "On") {
+              //On server has text channel.
+              if (Program.
+                  g_client.
+                  GetGuild(_serverId).
+                  Channels.
+                  FirstOrDefault(x => x.Name == $"{dbDataReader["notificationChannel"]}") is 
+                  SocketTextChannel channel) {
+                //Create and set embed object.
+                var embed = SimpleEmbed(Color.Gold, _author, _description);
 
-              //Create and set socket text channel
-              SocketTextChannel channel = 
-                Program._client.GetGuild(
-                  _serverId).Channels.FirstOrDefault(
-                  x => x.Name == $"{dbDataReader["notificationChannel"]}") as SocketTextChannel;
-
-              //On server has text channel
-              if(channel != null)
-              {
-
-                //Create and set embed object
-                var embed = SimpleEmbed(
-                  Color.Gold,
-                  _author,
-                  _description);
-
-                //Set the current time stamp
+                //Set the current time stamp.
                 embed.WithCurrentTimestamp();
 
-                //Send message to channel
-                Program._client.GetGuild(
-                  _serverId).GetTextChannel(channel.Id).SendMessageAsync("", false, embed.Build());
+                //Send message to notification channel.
+                Program.
+                g_client.
+                GetGuild(_serverId).
+                GetTextChannel(channel.Id).
+                SendMessageAsync("", false, embed.Build());
               }
-
-              //On no text channel found
-              else
-              {
-
+              //On no text channel found.
+              else {
                 //Create and set embed object
-                var embed = SimpleEmbed(
-                  Color.Gold,
-                  "Channel not found",
-                  "Notifications are On, but the **channel** to send them is not found or is not set, " +
-                  "please **set** the **notification channel **with** `~setchannel` command**.");
+                var embed = SimpleEmbed(Color.Gold,
+                                        "Channel not found",
+                                        "Notifications are `On`, but the **channel** to" +
+                                          " send them is not found or is not set," +
+                                          " please **set** the **notification channel**" +
+                                          " with **`~setchannel`**.");
 
-                //Send message to channel
-                Program._client.GetGuild(
-                  _serverId).DefaultChannel.SendMessageAsync("", false, embed.Build());
+                //Send message to default channel.
+                Program.
+                g_client.
+                GetGuild(_serverId).
+                DefaultChannel.
+                SendMessageAsync("", false, embed.Build());
               }
             }
           }

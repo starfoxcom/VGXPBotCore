@@ -12,55 +12,60 @@ using Discord.Addons.Interactive;
 
 using System.Data.SQLite;
 
-namespace VGXPBotCore.Modules
-{
+namespace VGXPBotCore.Modules {
+  /// <summary>
+  /// Class which contains commands to rename the username of a user on the server database.
+  /// </summary>
   public class RenameModule : InteractiveBase
   {
-
+    /// <summary>
+    /// Command task which updates the Vainglory username of a specific user on the database.
+    /// </summary>
+    /// <param name="_username">The new username to update.</param>
+    /// <param name="_user">The user to update their username.</param>
+    /// <remarks>
+    /// The user requires either be able to kick members on the server or be the bot owner.
+    /// </remarks>
     [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
     [RequireOwner(Group = "Permission")]
     [Command("rename")]
     [Summary("`Updates` the Vainglory username of the specified user on the database.")]
     [Alias("rn")]
-    public async Task RenameUsernameAsync(string username, [Remainder]SocketGuildUser user)
+    public async Task
+    RenameUsernameAsync(string _username, [Remainder]SocketGuildUser _user)
     {
-
-      //On user on database
-      if (CoreModule.UserDBExists(Context.Guild.Id, user.Id))
-      {
-
-        //Execute query
+      //On user on database.
+      if (CoreModule.UserExistsServerDB(Context.Guild.Id, _user.Id)) {
+        //Execute query.
         CoreModule.ExecuteQuery(Context.Guild.Id,
-          $"UPDATE users SET name = \"{username}\" where id = {user.Id};");
+                                $"UPDATE users SET name = '{_username}'" +
+                                  $" where id = {_user.Id};");
 
         //Set embed object
-        var embed = CoreModule.SimpleEmbed(
-        Color.Green,
-        "Update completed",
-        $"The **update** of the user {user.Mention} is **completed**.");
+        var embed = CoreModule.SimpleEmbed(Color.Green,
+                                           "Update completed",
+                                           $"The **update** of the user {_user.Mention}" +
+                                             $" is **completed**.");
 
-        //Reply embed
+        //Reply embed.
         await ReplyAsync("", false, embed.Build());
 
-        //Send notification
-        CoreModule.SendNotification(
-          Context.Guild.Id,
-          "User username updated",
-          $"{Context.User.Mention} **updated** the user {user.Mention} database " +
-          $"username to **`{username}`**.");
+        //Send notification.
+        CoreModule.SendNotification(Context.Guild.Id,
+                                    "User username updated",
+                                    $"{Context.User.Mention} **updated** the user" +
+                                      $" {_user.Mention} database username to" +
+                                      $" **`{_username}`**.");
       }
+      //On user not on database.
+      else {
+        //Create and set embed content.
+        var embed = CoreModule.SimpleEmbed(Color.Red,
+                                           "User not found",
+                                           $"{_user.Mention} doesn't exist on the database," +
+                                             $" **`update aborted`**.");
 
-      //On user not on database
-      else
-      {
-
-        //Create & set embed content
-        var embed = CoreModule.SimpleEmbed(
-        Color.Red,
-        "User not found",
-        $"{user.Mention} doesn't exist on the database, **`update aborted`**.");
-
-        //Reply embed
+        //Reply embed.
         await ReplyAsync("", false, embed.Build());
       }
     }
