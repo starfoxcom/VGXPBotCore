@@ -14,14 +14,13 @@ using System.Data.SQLite;
 
 namespace VGXPBotCore.Modules {
   /// <summary>
-  /// Class which contains commands to get help about the bot commands.
+  /// Class which contains utility commands about the bot.
   /// </summary>
-  public class HelpModule : InteractiveBase
+  public class Utility : InteractiveBase
   {
     /// <summary>
-    /// Command task which gets the bot commands.
+    /// Command task which gets the bot commands the user can use based on it's permissions.
     /// </summary>
-    /// <returns></returns>
     [Command("help")]
     [Summary("`Shows` the commands of the bot.")]
     [Alias("h")]
@@ -87,7 +86,7 @@ namespace VGXPBotCore.Modules {
                                              $" couldn't be found.");
 
         //Reply embed.
-        await ReplyAsync("",false, embed.Build());
+        await ReplyAsync("", false, embed.Build());
 
         return;
       }
@@ -115,6 +114,53 @@ namespace VGXPBotCore.Modules {
 
       //Reply embed.
       await ReplyAsync("", false, builder.Build());
+    }
+
+    /// <summary>
+    /// Command task which shows info about the bot.
+    /// </summary>
+    [Command("info")]
+    [Summary("`Shows` info about the bot.")]
+    [Alias("i")]
+    public async Task
+    InfoAsync()
+    {
+      //Create and set embed object.
+      var embed = CoreModule.SimpleEmbed(Color.Gold,
+                                         "Bot info",
+                                         "**Vainglory XP Fame Tracker for Discord**\n\n" +
+                                           "This is a simple, yet useful Discord Bot made" +
+                                           " on .Net Core with the help of" +
+                                           " [Discord.Net](https://github.com/discord-net" +
+                                           "/Discord.Net) which makes easier to keep track" +
+                                           " of the XP Fame of members on a guild in the" +
+                                           " mobile game Vainglory.");
+
+      //Add embed thumbnail.
+      embed.WithThumbnailUrl(Context.Client.CurrentUser.GetAvatarUrl());
+
+      //Add embed field.
+      embed.AddField("Try it out!",
+                     "If you want to give it a try and see for yourself if the bot is what" +
+                       " you're looking for your guild, don't hesitate and invite it to" +
+                       " your server.\n\n**[Discord bots link](https://top.gg/bot/" +
+                       "378327784499445760)**");
+
+      //Add embed field.
+      embed.AddField("Contribute!",
+                     "Also, if you want to give some feedback or want to work and improve" +
+                     " the bot together, you can find me on Discord as **starfoxcom#8144**.");
+
+      //Add embed field.
+      embed.AddField("GitHub Repository",
+                     "You can find here the link to the project: [VGXPBotCore]" +
+                       "(https://github.com/starfoxcom/VGXPBotCore/)");
+
+      //Add embed footer.
+      embed.WithFooter("Made with love and a ton of effort by starfoxcom#8144");
+
+      //Reply embed.
+      await ReplyAsync("", false, embed.Build());
     }
   }
 }
