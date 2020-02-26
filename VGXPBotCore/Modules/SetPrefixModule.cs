@@ -22,6 +22,9 @@ namespace VGXPBotCore.Modules {
     /// Command task which sets the bot prefix of the server.
     /// </summary>
     /// <param name="_prefix">The new bot prefix to set for the server.</param>
+    /// <remarks>
+    /// The user requires either be able to kick members on the server or be the bot owner.
+    /// </remarks>
     [RequireUserPermission(GuildPermission.KickMembers, Group = "Permission")]
     [RequireOwner(Group = "Permission")]
     [Command("setprefix")]
