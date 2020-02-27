@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['infoasync',['InfoAsync',['../class_v_g_x_p_bot_core_1_1_modules_1_1_info_module.html#a07caebebafe47d28738861fdce915df7',1,'VGXPBotCore::Modules::InfoModule']]],
-  ['installcommandsasync',['InstallCommandsAsync',['../class_v_g_x_p_bot_core_1_1_program.html#acb3ac1ea530772beccd1e104aee59a25',1,'VGXPBotCore::Program']]]
+  ['handlecommandasync',['HandleCommandAsync',['../class_v_g_x_p_bot_core_1_1_program.html#ad2d0f785cdb839592260e3580c97473c',1,'VGXPBotCore::Program']]],
+  ['helpasync',['HelpAsync',['../class_v_g_x_p_bot_core_1_1_modules_1_1_utility.html#a6c5f42adbcfe257dfe618856a629c21b',1,'VGXPBotCore.Modules.Utility.HelpAsync()'],['../class_v_g_x_p_bot_core_1_1_modules_1_1_utility.html#a984d9965573fd3a8927d99ab4555cd19',1,'VGXPBotCore.Modules.Utility.HelpAsync(string _command)']]]
 ];

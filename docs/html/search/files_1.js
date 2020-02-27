@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['deletemodule_2ecs',['DeleteModule.cs',['../_delete_module_8cs.html',1,'']]]
+  ['management_2ecs',['Management.cs',['../_management_8cs.html',1,'']]]
 ];
