@@ -93,7 +93,7 @@ namespace VGXPBotCore.Modules {
         }
         catch(NullReferenceException e) {
           //Add to description.
-          description += $"Owner: **`null`**, Name: **`{guild.Current.Name}`**\n";
+          description += $"**`{e.Message}`**, Name: **`{guild.Current.Name}`**\n";
         }
       }
 
@@ -120,6 +120,11 @@ namespace VGXPBotCore.Modules {
 
       //Loop guild iterator.
       while (guild.MoveNext()) {
+        //On send messages permission.
+        if(guild.
+           Current.
+           CurrentUser.
+           GetPermissions(guild.Current.DefaultChannel).SendMessages) {
         //Send message to default channel.
         await guild.
               Current.
@@ -129,6 +134,7 @@ namespace VGXPBotCore.Modules {
                                CoreModule.SimpleEmbed(Color.Blue,
                                                       _title,
                                                       _description).Build());
+        }
 
         //Delay task.
         await Task.Delay(1000);
