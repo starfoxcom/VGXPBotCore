@@ -262,6 +262,11 @@ namespace VGXPBotCore.Modules {
                                          "Start new stats completed",
                                          "The **`new stats`** of the database is completed.");
 
+      //Send notification.
+      CoreModule.SendNotification(Context.Guild.Id,
+                                  "Started new server stats",
+                                  $"{Context.User.Mention} **started** new database stats.");
+
       //Reply embed.
       await ReplyAsync("", false, embed.Build());
     }
@@ -501,24 +506,23 @@ namespace VGXPBotCore.Modules {
 
       //Create and set embed object.
       var Achieved = CoreModule.SimpleEmbed(Color.Green,
-                                            $"Users who achieved {_goal} XP Fame",
-                                            null);
+                                            "Achieved",
+                                            $"Users who achieved {_goal} XP Fame");
 
       //Create and set embed object.
       var Achieved2 = CoreModule.SimpleEmbed(Color.Green,
-                                             $"Users who achieved {_goal} XP Fame (Cont.)",
-                                             null);
+                                             "Achieved (Cont.)",
+                                             $"Users who achieved {_goal} XP Fame");
 
       //Create and set embed object.
       var notAchieved = CoreModule.SimpleEmbed(Color.Red,
-                                               $"Users who not achieved {_goal} XP Fame",
-                                               null);
+                                               "Not achieved",
+                                               $"Users who not achieved {_goal} XP Fame");
 
       //Create and set embed object.
       var notAchieved2 = CoreModule.SimpleEmbed(Color.Red,
-                                                $"Users who not achieved {_goal} XP Fame" +
-                                                  $" (Cont.)",
-                                                null);
+                                                "Not achieved (Cont.)",
+                                                $"Users who not achieved {_goal} XP Fame");
 
       //Create and set user counters.
       int achievedCount = 0;
