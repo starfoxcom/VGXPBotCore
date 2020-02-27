@@ -84,10 +84,17 @@ namespace VGXPBotCore.Modules {
 
       //Loop guild iterator.
       while (guild.MoveNext()) {
-        //Add to description.
-        description += $"Owner: **`{guild.Current.Owner.Username}#" +
-                         $"{guild.Current.Owner.Discriminator}`**," +
-                         $" Name: **`{guild.Current.Name}`**\n";
+        //On 
+        try {
+          //Add to description.
+          description += $"Owner: **`{guild.Current.Owner.Username}#" +
+                           $"{guild.Current.Owner.Discriminator}`**," +
+                           $" Name: **`{guild.Current.Name}`**\n";
+        }
+        catch(NullReferenceException e) {
+          //Add to description.
+          description += $"Owner: **`null`**, Name: **`{guild.Current.Name}`**\n";
+        }
       }
 
       //Add description.
