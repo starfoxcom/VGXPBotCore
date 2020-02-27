@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['ready',['Ready',['../class_v_g_x_p_bot_core_1_1_program.html#aedb7e423eaf02945fd40e0ac32a9dee4',1,'VGXPBotCore::Program']]],
-  ['renameusernameasync',['RenameUsernameAsync',['../class_v_g_x_p_bot_core_1_1_modules_1_1_rename_module.html#a4b6232257e7afc538910c752b0f3769c',1,'VGXPBotCore::Modules::RenameModule']]]
+  ['main',['Main',['../class_v_g_x_p_bot_core_1_1_program.html#ac7c22389eb797d19034264479556310c',1,'VGXPBotCore::Program']]],
+  ['mainasync',['MainAsync',['../class_v_g_x_p_bot_core_1_1_program.html#a8050d27e307a2579143ce33e87353339',1,'VGXPBotCore::Program']]]
 ];

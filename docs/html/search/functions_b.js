@@ -1,6 +1,12 @@
 var searchData=
 [
-  ['updatestatsasync',['UpdateStatsAsync',['../class_v_g_x_p_bot_core_1_1_modules_1_1_update_stats_module.html#a9674bb93fca90145909c81f94ae8a465',1,'VGXPBotCore::Modules::UpdateStatsModule']]],
-  ['userexistsserverdb',['UserExistsServerDB',['../class_v_g_x_p_bot_core_1_1_modules_1_1_core_module.html#a620bf828302fc8539eae89419697420d',1,'VGXPBotCore::Modules::CoreModule']]],
-  ['userleft',['UserLeft',['../class_v_g_x_p_bot_core_1_1_program.html#a41144e4fc30fa0691675c029d6889b6f',1,'VGXPBotCore::Program']]]
+  ['sendnotification',['SendNotification',['../class_v_g_x_p_bot_core_1_1_modules_1_1_core_module.html#a1192929aec2364f86b22f0fe1e8cb504',1,'VGXPBotCore::Modules::CoreModule']]],
+  ['servercountasync',['ServerCountAsync',['../class_v_g_x_p_bot_core_1_1_modules_1_1_owner.html#a6acd84b0c5100c3640218d8a8ed3f280',1,'VGXPBotCore::Modules::Owner']]],
+  ['setnotificationchannelasync',['SetNotificationChannelAsync',['../class_v_g_x_p_bot_core_1_1_modules_1_1_settings.html#ad6a1f94fcf085ec893cd1845165e7ce1',1,'VGXPBotCore::Modules::Settings']]],
+  ['setnotificationsasync',['SetNotificationsAsync',['../class_v_g_x_p_bot_core_1_1_modules_1_1_settings.html#ab28c7fbe124969a99f9c534e47a4d331',1,'VGXPBotCore::Modules::Settings']]],
+  ['setprefixasync',['SetPrefixAsync',['../class_v_g_x_p_bot_core_1_1_modules_1_1_settings.html#a42d61fe3202eda9863651c2152a41f36',1,'VGXPBotCore::Modules::Settings']]],
+  ['setroleasync',['SetRoleAsync',['../class_v_g_x_p_bot_core_1_1_modules_1_1_settings.html#affa28c5643cbc0e4e1e754b8c1db7d12',1,'VGXPBotCore::Modules::Settings']]],
+  ['signupasync',['SignupAsync',['../class_v_g_x_p_bot_core_1_1_modules_1_1_management.html#a7e9b6b8985c872ec5803aa6024d376d2',1,'VGXPBotCore.Modules.Management.SignupAsync(string _username, string _region)'],['../class_v_g_x_p_bot_core_1_1_modules_1_1_management.html#a4bc211395aada18aaa5001c27bc6d118',1,'VGXPBotCore.Modules.Management.SignupAsync(string _username, string _region, [Remainder]SocketGuildUser _user)']]],
+  ['simpleembed',['SimpleEmbed',['../class_v_g_x_p_bot_core_1_1_modules_1_1_core_module.html#ae6e14946a7183cf0f89f093a1c41b964',1,'VGXPBotCore::Modules::CoreModule']]],
+  ['startnewstatsasync',['StartNewStatsAsync',['../class_v_g_x_p_bot_core_1_1_modules_1_1_stats.html#a7de54862a0d8259228f0cc241a879849',1,'VGXPBotCore::Modules::Stats']]]
 ];
