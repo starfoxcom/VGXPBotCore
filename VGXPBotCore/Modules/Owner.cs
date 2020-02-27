@@ -139,6 +139,12 @@ namespace VGXPBotCore.Modules {
         //Delay task.
         await Task.Delay(1000);
       }
+
+      await ReplyAsync("",
+                       false,
+                       CoreModule.SimpleEmbed(Color.Green,
+                                              "Send global notification completed",
+                                              "The notification has been **`sent`**").Build());
     }
   }
 }
